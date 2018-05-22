@@ -22,7 +22,7 @@ pod 'ClusteringMarkers'
 
 ## Author
 
-Alex, smorodov@vigroup.ru
+Aleksandr, Alex11Sm@mail.ru
 
 ## License
 
