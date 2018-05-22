@@ -1,0 +1,6 @@
+use_frameworks!
+target 'ClusteringMarkers_Tests' do
+  pod 'ClusteringMarkers', :path => '../'
+  
+  
+end
