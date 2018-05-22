@@ -1,0 +1,16 @@
+PODS:
+  - ClusteringMarkers (0.1.0)
+
+DEPENDENCIES:
+  - ClusteringMarkers (from `../`)
+
+EXTERNAL SOURCES:
+  ClusteringMarkers:
+    :path: ../
+
+SPEC CHECKSUMS:
+  ClusteringMarkers: ae19da8c678b4fc9983e5ef2d191548591f8201c
+
+PODFILE CHECKSUM: 7bd7225f9a9311e25dd78c113b552bcf359f81ed
+
+COCOAPODS: 1.4.0

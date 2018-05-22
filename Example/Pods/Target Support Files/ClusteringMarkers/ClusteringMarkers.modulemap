@@ -1,0 +1,6 @@
+framework module ClusteringMarkers {
+  umbrella header "ClusteringMarkers-umbrella.h"
+
+  export *
+  module * { export * }
+}

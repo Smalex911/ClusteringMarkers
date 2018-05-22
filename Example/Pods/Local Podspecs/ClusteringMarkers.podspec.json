@@ -1,0 +1,22 @@
+{
+  "name": "ClusteringMarkers",
+  "version": "0.1.0",
+  "summary": "A short description of ClusteringMarkers.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Alex/ClusteringMarkers",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Alex": "smorodov@vigroup.ru"
+  },
+  "source": {
+    "git": "https://github.com/Alex/ClusteringMarkers.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "ClusteringMarkers/Classes/**/*"
+}
