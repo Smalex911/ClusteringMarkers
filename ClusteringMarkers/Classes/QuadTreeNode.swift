@@ -1,9 +1,6 @@
 //
 //  FBQuadTreeNode.swift
-//  saas-ios
-//
-//  Created by Александр Смородов on 03.05.2018.
-//  Copyright © 2018 Nikita Zhukov. All rights reserved.
+//  Created by Aleksandr Smorodov on 22.5.18.
 //
 
 import YandexMapKit
