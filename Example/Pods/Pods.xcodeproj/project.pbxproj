@@ -8,12 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		0DA45D327562A18824BE8277DD52BFEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		2C9678495E382DB9B1600650A59E39A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		576B1BA4266E981D5CCC12E2ED079BC6 /* ClusteringMarkers-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EAD76D444794DB0EA1624F46A41291A2 /* ClusteringMarkers-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1851DF6EB76A71C26D23535895570742 /* ClusteringMarkers-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A6C61B27030470E968C5B0B7FF89A02C /* ClusteringMarkers-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2307B303277EC0608B3293AB0F05435E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		49446B1371BBF912CA82F8E8DE2520BF /* ClusteringMarkers-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AA61873670583A3EC6268BDF0F88AA7F /* ClusteringMarkers-dummy.m */; };
+		67078938A72706FB5E13744A76893446 /* ZoomLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A377EFAF2ECEAD911C1870588E5D7F /* ZoomLevel.swift */; };
+		8FFF21D045B30227624B0AC3F2F5977A /* Marker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EB89ED66E6776DB6B768AE2E0BC966 /* Marker.swift */; };
 		9CAFA1AC74EFA3B8DD66D1A062DE6F0E /* Pods-ClusteringMarkers_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 66EF1AFCCD1A8BFF14795982FD4B7245 /* Pods-ClusteringMarkers_Tests-dummy.m */; };
+		A71B8295B92501E834FB4A162262D3BE /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26E3D1F659F5116FCCC5A80C0FB24E1 /* BoundingBox.swift */; };
 		B3727D1CF9CF188A0B79CB6432782CD7 /* Pods-ClusteringMarkers_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 143C80A5BCDDD257C6AF6AD169B412E0 /* Pods-ClusteringMarkers_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E6C89975D68FE918FA6C3090C44095CE /* ClusteringMarkers-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C0C3077DC1E8B53C6AE6D72629B366 /* ClusteringMarkers-dummy.m */; };
-		F6431E5A3CE9416DC09D0CFEC36A35F6 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6403C0056ACA2E114F969288A1939302 /* ReplaceMe.swift */; };
+		B803CF2554F673D002E76E258C9B5A6D /* ClusteringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AC51CC0ABCAE8F3F3CB95448AB8C03 /* ClusteringManager.swift */; };
+		BC9E6BB036FF283CE3259DB425871AE9 /* QuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F4E1B8E6E9FE13D7DC95EAA39AADD0B /* QuadTree.swift */; };
+		C0AE20352B9C612F26FA3072DE1EAADD /* BoundsMapMarkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C052139EBE6045DABBF5A0C60B16655F /* BoundsMapMarkers.swift */; };
+		C6D4E6272EB56A6DD32D75BDF5B06240 /* QuadTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF0FDCFC34A1895D53F34ED79B1DA90 /* QuadTreeNode.swift */; };
+		E4FA4CDFC1D18009AF1B84F238F29DBB /* ClusterViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D356B45A4ACBB7D9ADE524C1E3DD5992 /* ClusterViewConfiguration.swift */; };
+		E5AC6DB5C6EDDE92AC1DAD9EAC5A1E86 /* MapKitAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14393324DC195F12FE7D10064733E0BA /* MapKitAdapter.swift */; };
+		FB148E24E0B0C7F64A6B7534FB9443BA /* Cluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D8BA8C2501B4290A913C0E1E8D7686 /* Cluster.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,47 +30,45 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 784B042C1AC43BB11A7EF773C8A18746;
+			remoteGlobalIDString = FC5D4F84783D8CF40127B7236FD9EAF8;
 			remoteInfo = ClusteringMarkers;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		032B7B0D90EF4157B02397AF2B5B5383 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		07BC03E7F6FF86C22ABC48CE7E7D49F3 /* Pods-ClusteringMarkers_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ClusteringMarkers_Tests-resources.sh"; sourceTree = "<group>"; };
-		0F754751BB328E91BB34ECC8063D535D /* ClusteringMarkers.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ClusteringMarkers.modulemap; sourceTree = "<group>"; };
+		0F4E1B8E6E9FE13D7DC95EAA39AADD0B /* QuadTree.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuadTree.swift; path = ClusteringMarkers/Classes/QuadTree.swift; sourceTree = "<group>"; };
+		14393324DC195F12FE7D10064733E0BA /* MapKitAdapter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapKitAdapter.swift; path = ClusteringMarkers/Classes/MapKitAdapter.swift; sourceTree = "<group>"; };
 		143C80A5BCDDD257C6AF6AD169B412E0 /* Pods-ClusteringMarkers_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-ClusteringMarkers_Tests-umbrella.h"; sourceTree = "<group>"; };
-		2BF257D7A9F2799C0DCA05798331E7F3 /* ClusteringMarkers.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = ClusteringMarkers.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		14D8BA8C2501B4290A913C0E1E8D7686 /* Cluster.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Cluster.swift; path = ClusteringMarkers/Classes/Cluster.swift; sourceTree = "<group>"; };
+		18B8542B72C91DD05CCC52F99B2C4A9F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		563DAE47B40FC57F84B00EE1CC19B7E7 /* ClusteringMarkers-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ClusteringMarkers-prefix.pch"; sourceTree = "<group>"; };
 		5A4A5E86C27FC9A0CCF4C763B77D38B5 /* Pods-ClusteringMarkers_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-ClusteringMarkers_Tests.modulemap"; sourceTree = "<group>"; };
-		63B11FA281CA2019DD55E0F282E661E0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		6403C0056ACA2E114F969288A1939302 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = ClusteringMarkers/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		66EF1AFCCD1A8BFF14795982FD4B7245 /* Pods-ClusteringMarkers_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ClusteringMarkers_Tests-dummy.m"; sourceTree = "<group>"; };
-		6A3C995B3DA9529DF3BF4089A2525650 /* ClusteringMarkers.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ClusteringMarkers.xcconfig; sourceTree = "<group>"; };
-		79C0C3077DC1E8B53C6AE6D72629B366 /* ClusteringMarkers-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ClusteringMarkers-dummy.m"; sourceTree = "<group>"; };
-		91E2E172B21BECAC1179ED5C4E8D5C7E /* Pods_ClusteringMarkers_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_ClusteringMarkers_Tests.framework; path = "Pods-ClusteringMarkers_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7F43872D1999017664B9361993F6A7 /* ClusteringMarkers.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ClusteringMarkers.modulemap; sourceTree = "<group>"; };
+		91E2E172B21BECAC1179ED5C4E8D5C7E /* Pods_ClusteringMarkers_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClusteringMarkers_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9336E447F32AE9AFF1D2B619C58261D6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A2344EE1D64588D29B5834DEDC36F000 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9A077C5FE70497BBB98681B3EABF664F /* ClusteringMarkers.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ClusteringMarkers.xcconfig; sourceTree = "<group>"; };
+		A6C61B27030470E968C5B0B7FF89A02C /* ClusteringMarkers-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ClusteringMarkers-umbrella.h"; sourceTree = "<group>"; };
 		A94CF162F668D0328A08D2A998D56AD3 /* Pods-ClusteringMarkers_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ClusteringMarkers_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		AFC8046287CB55E987896C4C505BE682 /* ClusteringMarkers-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ClusteringMarkers-prefix.pch"; sourceTree = "<group>"; };
+		AA61873670583A3EC6268BDF0F88AA7F /* ClusteringMarkers-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ClusteringMarkers-dummy.m"; sourceTree = "<group>"; };
 		B04C3850FAA35501F82D3160FE5CC5BC /* Pods-ClusteringMarkers_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ClusteringMarkers_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		B7CC0604D46C10661EE7DABB7BC876CE /* ClusteringMarkers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ClusteringMarkers.framework; path = ClusteringMarkers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B26E3D1F659F5116FCCC5A80C0FB24E1 /* BoundingBox.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoundingBox.swift; path = ClusteringMarkers/Classes/BoundingBox.swift; sourceTree = "<group>"; };
+		B7CC0604D46C10661EE7DABB7BC876CE /* ClusteringMarkers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ClusteringMarkers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE581B0BA5C39B64BF922A4ED763B3F9 /* Pods-ClusteringMarkers_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ClusteringMarkers_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		BEF0FDCFC34A1895D53F34ED79B1DA90 /* QuadTreeNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuadTreeNode.swift; path = ClusteringMarkers/Classes/QuadTreeNode.swift; sourceTree = "<group>"; };
+		C052139EBE6045DABBF5A0C60B16655F /* BoundsMapMarkers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoundsMapMarkers.swift; path = ClusteringMarkers/Classes/BoundsMapMarkers.swift; sourceTree = "<group>"; };
+		D356B45A4ACBB7D9ADE524C1E3DD5992 /* ClusterViewConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClusterViewConfiguration.swift; path = ClusteringMarkers/Classes/ClusterViewConfiguration.swift; sourceTree = "<group>"; };
+		D7AC51CC0ABCAE8F3F3CB95448AB8C03 /* ClusteringManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClusteringManager.swift; path = ClusteringMarkers/Classes/ClusteringManager.swift; sourceTree = "<group>"; };
 		DEED54E1796B2A8C436DE476965C8E24 /* Pods-ClusteringMarkers_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ClusteringMarkers_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		EAD76D444794DB0EA1624F46A41291A2 /* ClusteringMarkers-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ClusteringMarkers-umbrella.h"; sourceTree = "<group>"; };
+		E6A377EFAF2ECEAD911C1870588E5D7F /* ZoomLevel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZoomLevel.swift; path = ClusteringMarkers/Classes/ZoomLevel.swift; sourceTree = "<group>"; };
+		E9EB89ED66E6776DB6B768AE2E0BC966 /* Marker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Marker.swift; path = ClusteringMarkers/Classes/Marker.swift; sourceTree = "<group>"; };
 		EB42B55E2BA2EA392017610B4D6580E2 /* Pods-ClusteringMarkers_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ClusteringMarkers_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		174077B47F16FB5ADB12A9F12C2D381E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2C9678495E382DB9B1600650A59E39A7 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		2BFBE08B37182442D8FCCC351EF7D9DD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -70,9 +77,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BFE4E5B452860B1FB4B10C33896F42CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2307B303277EC0608B3293AB0F05435E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FD293946B6E359507FA55577ACB4BF4 /* ClusteringMarkers */ = {
+			isa = PBXGroup;
+			children = (
+				B26E3D1F659F5116FCCC5A80C0FB24E1 /* BoundingBox.swift */,
+				C052139EBE6045DABBF5A0C60B16655F /* BoundsMapMarkers.swift */,
+				14D8BA8C2501B4290A913C0E1E8D7686 /* Cluster.swift */,
+				D7AC51CC0ABCAE8F3F3CB95448AB8C03 /* ClusteringManager.swift */,
+				D356B45A4ACBB7D9ADE524C1E3DD5992 /* ClusterViewConfiguration.swift */,
+				14393324DC195F12FE7D10064733E0BA /* MapKitAdapter.swift */,
+				E9EB89ED66E6776DB6B768AE2E0BC966 /* Marker.swift */,
+				0F4E1B8E6E9FE13D7DC95EAA39AADD0B /* QuadTree.swift */,
+				BEF0FDCFC34A1895D53F34ED79B1DA90 /* QuadTreeNode.swift */,
+				E6A377EFAF2ECEAD911C1870588E5D7F /* ZoomLevel.swift */,
+				6209F0F72220A80C0B8CB2DF719727C3 /* Support Files */,
+			);
+			name = ClusteringMarkers;
+			path = ../..;
+			sourceTree = "<group>";
+		};
 		42560E9361336983097EE34DF4CB090B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,24 +114,6 @@
 				91E2E172B21BECAC1179ED5C4E8D5C7E /* Pods_ClusteringMarkers_Tests.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		50EBA68AFE20AA753A973FB8AB1FA28C /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				2BF257D7A9F2799C0DCA05798331E7F3 /* ClusteringMarkers.podspec */,
-				63B11FA281CA2019DD55E0F282E661E0 /* LICENSE */,
-				032B7B0D90EF4157B02397AF2B5B5383 /* README.md */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		51B977803B3386DADBE22DCCC39AB303 /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A134FDDCCB5AD510553FDF0AEB0816A9 /* ClusteringMarkers */,
-			);
-			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		54BE568B6295BDF25C6E02FC7952DBD8 /* Targets Support Files */ = {
@@ -108,40 +124,37 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		7DB346D0F39D3F0E887471402A8071AB = {
+		56495AC7F55D3C2AA20122815547FD2D /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				51B977803B3386DADBE22DCCC39AB303 /* Development Pods */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				42560E9361336983097EE34DF4CB090B /* Products */,
-				54BE568B6295BDF25C6E02FC7952DBD8 /* Targets Support Files */,
+				3FD293946B6E359507FA55577ACB4BF4 /* ClusteringMarkers */,
 			);
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		94997A05B3FDD90876B8DF38E68A0EDE /* Support Files */ = {
+		6209F0F72220A80C0B8CB2DF719727C3 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				0F754751BB328E91BB34ECC8063D535D /* ClusteringMarkers.modulemap */,
-				6A3C995B3DA9529DF3BF4089A2525650 /* ClusteringMarkers.xcconfig */,
-				79C0C3077DC1E8B53C6AE6D72629B366 /* ClusteringMarkers-dummy.m */,
-				AFC8046287CB55E987896C4C505BE682 /* ClusteringMarkers-prefix.pch */,
-				EAD76D444794DB0EA1624F46A41291A2 /* ClusteringMarkers-umbrella.h */,
-				A2344EE1D64588D29B5834DEDC36F000 /* Info.plist */,
+				7B7F43872D1999017664B9361993F6A7 /* ClusteringMarkers.modulemap */,
+				9A077C5FE70497BBB98681B3EABF664F /* ClusteringMarkers.xcconfig */,
+				AA61873670583A3EC6268BDF0F88AA7F /* ClusteringMarkers-dummy.m */,
+				563DAE47B40FC57F84B00EE1CC19B7E7 /* ClusteringMarkers-prefix.pch */,
+				A6C61B27030470E968C5B0B7FF89A02C /* ClusteringMarkers-umbrella.h */,
+				18B8542B72C91DD05CCC52F99B2C4A9F /* Info.plist */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/ClusteringMarkers";
 			sourceTree = "<group>";
 		};
-		A134FDDCCB5AD510553FDF0AEB0816A9 /* ClusteringMarkers */ = {
+		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
-				6403C0056ACA2E114F969288A1939302 /* ReplaceMe.swift */,
-				50EBA68AFE20AA753A973FB8AB1FA28C /* Pod */,
-				94997A05B3FDD90876B8DF38E68A0EDE /* Support Files */,
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				56495AC7F55D3C2AA20122815547FD2D /* Development Pods */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				42560E9361336983097EE34DF4CB090B /* Products */,
+				54BE568B6295BDF25C6E02FC7952DBD8 /* Targets Support Files */,
 			);
-			name = ClusteringMarkers;
-			path = ../..;
 			sourceTree = "<group>";
 		};
 		B8FDCCDA5C737D18A448E44894E04889 /* Pods-ClusteringMarkers_Tests */ = {
@@ -181,11 +194,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		D85341AC190D0B0EBA72FDA081503A09 /* Headers */ = {
+		19261414ED161A0CF2D9A755698587F7 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				576B1BA4266E981D5CCC12E2ED079BC6 /* ClusteringMarkers-umbrella.h in Headers */,
+				1851DF6EB76A71C26D23535895570742 /* ClusteringMarkers-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,23 +213,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		784B042C1AC43BB11A7EF773C8A18746 /* ClusteringMarkers */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DF28A699231E2FA281E9E20B9DD1D5B3 /* Build configuration list for PBXNativeTarget "ClusteringMarkers" */;
-			buildPhases = (
-				71060F15BE0F1A3644CC73ADF4401209 /* Sources */,
-				174077B47F16FB5ADB12A9F12C2D381E /* Frameworks */,
-				D85341AC190D0B0EBA72FDA081503A09 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ClusteringMarkers;
-			productName = ClusteringMarkers;
-			productReference = B7CC0604D46C10661EE7DABB7BC876CE /* ClusteringMarkers.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		B38E10BF410390DE272994D2E3E331AD /* Pods-ClusteringMarkers_Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6C6741F6EAE4026B8D8B4B11FE628FAC /* Build configuration list for PBXNativeTarget "Pods-ClusteringMarkers_Tests" */;
@@ -233,6 +229,23 @@
 			name = "Pods-ClusteringMarkers_Tests";
 			productName = "Pods-ClusteringMarkers_Tests";
 			productReference = 91E2E172B21BECAC1179ED5C4E8D5C7E /* Pods_ClusteringMarkers_Tests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FC5D4F84783D8CF40127B7236FD9EAF8 /* ClusteringMarkers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1F8358834BA3A7F3F8F1384604C10264 /* Build configuration list for PBXNativeTarget "ClusteringMarkers" */;
+			buildPhases = (
+				818E18389708A0CE349D3A228BD2B4A7 /* Sources */,
+				BFE4E5B452860B1FB4B10C33896F42CE /* Frameworks */,
+				19261414ED161A0CF2D9A755698587F7 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClusteringMarkers;
+			productName = ClusteringMarkers;
+			productReference = B7CC0604D46C10661EE7DABB7BC876CE /* ClusteringMarkers.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -256,7 +269,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				784B042C1AC43BB11A7EF773C8A18746 /* ClusteringMarkers */,
+				FC5D4F84783D8CF40127B7236FD9EAF8 /* ClusteringMarkers */,
 				B38E10BF410390DE272994D2E3E331AD /* Pods-ClusteringMarkers_Tests */,
 			);
 		};
@@ -271,12 +284,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		71060F15BE0F1A3644CC73ADF4401209 /* Sources */ = {
+		818E18389708A0CE349D3A228BD2B4A7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6C89975D68FE918FA6C3090C44095CE /* ClusteringMarkers-dummy.m in Sources */,
-				F6431E5A3CE9416DC09D0CFEC36A35F6 /* ReplaceMe.swift in Sources */,
+				A71B8295B92501E834FB4A162262D3BE /* BoundingBox.swift in Sources */,
+				C0AE20352B9C612F26FA3072DE1EAADD /* BoundsMapMarkers.swift in Sources */,
+				FB148E24E0B0C7F64A6B7534FB9443BA /* Cluster.swift in Sources */,
+				B803CF2554F673D002E76E258C9B5A6D /* ClusteringManager.swift in Sources */,
+				49446B1371BBF912CA82F8E8DE2520BF /* ClusteringMarkers-dummy.m in Sources */,
+				E4FA4CDFC1D18009AF1B84F238F29DBB /* ClusterViewConfiguration.swift in Sources */,
+				E5AC6DB5C6EDDE92AC1DAD9EAC5A1E86 /* MapKitAdapter.swift in Sources */,
+				8FFF21D045B30227624B0AC3F2F5977A /* Marker.swift in Sources */,
+				BC9E6BB036FF283CE3259DB425871AE9 /* QuadTree.swift in Sources */,
+				C6D4E6272EB56A6DD32D75BDF5B06240 /* QuadTreeNode.swift in Sources */,
+				67078938A72706FB5E13744A76893446 /* ZoomLevel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +308,7 @@
 		518302CC7D5BC04C41AB3D77B8699589 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ClusteringMarkers;
-			target = 784B042C1AC43BB11A7EF773C8A18746 /* ClusteringMarkers */;
+			target = FC5D4F84783D8CF40127B7236FD9EAF8 /* ClusteringMarkers */;
 			targetProxy = 5220936B275388FB0B8867CF42FCE04D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -326,9 +348,40 @@
 			};
 			name = Release;
 		};
-		4A9F63F0379EE5E09D474120F88A9BE9 /* Release */ = {
+		1BAB7E561BF8638F82921F4691B78FD9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6A3C995B3DA9529DF3BF4089A2525650 /* ClusteringMarkers.xcconfig */;
+			baseConfigurationReference = 9A077C5FE70497BBB98681B3EABF664F /* ClusteringMarkers.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ClusteringMarkers/ClusteringMarkers-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ClusteringMarkers/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ClusteringMarkers/ClusteringMarkers.modulemap";
+				PRODUCT_NAME = ClusteringMarkers;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1FDEE635A0C165615B378EE131F9AFC2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A077C5FE70497BBB98681B3EABF664F /* ClusteringMarkers.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -513,40 +566,18 @@
 			};
 			name = Debug;
 		};
-		F825C9C7D2856FE66EE7F76108582E60 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6A3C995B3DA9529DF3BF4089A2525650 /* ClusteringMarkers.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ClusteringMarkers/ClusteringMarkers-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ClusteringMarkers/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/ClusteringMarkers/ClusteringMarkers.modulemap";
-				PRODUCT_NAME = ClusteringMarkers;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1F8358834BA3A7F3F8F1384604C10264 /* Build configuration list for PBXNativeTarget "ClusteringMarkers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BAB7E561BF8638F82921F4691B78FD9 /* Debug */,
+				1FDEE635A0C165615B378EE131F9AFC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -561,15 +592,6 @@
 			buildConfigurations = (
 				CCA4916EF778D391F5368FFF93CB2E6F /* Debug */,
 				092638C2D03CA9E6C80ACA627267E22E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DF28A699231E2FA281E9E20B9DD1D5B3 /* Build configuration list for PBXNativeTarget "ClusteringMarkers" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F825C9C7D2856FE66EE7F76108582E60 /* Debug */,
-				4A9F63F0379EE5E09D474120F88A9BE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

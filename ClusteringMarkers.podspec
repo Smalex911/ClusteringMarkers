@@ -9,7 +9,8 @@
 Pod::Spec.new do |s|
   s.name             = 'ClusteringMarkers'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of ClusteringMarkers.'
+  s.summary          = 'Clustering markers using YandexMapKit.'
+  s.swift_version    = '4.0'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,18 +18,18 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+#  s.description      = <<-DESC
+#TODO: Add long description of the pod here.
+#                       DESC
 
-  s.homepage         = 'https://github.com/Alex/ClusteringMarkers'
+  s.homepage         = 'https://github.com/Smalex911/ClusteringMarkers'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Alex' => 'smorodov@vigroup.ru' }
-  s.source           = { :git => 'https://github.com/Alex/ClusteringMarkers.git', :tag => s.version.to_s }
+  s.author           = { 'Aleksandr' => 'alex11sm@mail.ru.ru' }
+  s.source           = { :git => 'https://github.com/Smalex911/ClusteringMarkers.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'ClusteringMarkers/Classes/**/*'
   
@@ -37,6 +38,8 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'UIKit'
+  s.static_framework = true
+  
+  s.dependency 'YandexMapKit', '~> 3.0'
 end
