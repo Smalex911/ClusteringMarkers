@@ -1,6 +1,6 @@
 # ClusteringMarkers
 
-[![CI Status](https://img.shields.io/travis/Alex/ClusteringMarkers.svg?style=flat)](https://travis-ci.org/Alex/ClusteringMarkers)
+[![CI Status](https://img.shields.io/travis/Smalex911/ClusteringMarkers.svg?style=flat)](https://travis-ci.org/Smalex911/ClusteringMarkers)
 [![Version](https://img.shields.io/cocoapods/v/ClusteringMarkers.svg?style=flat)](https://cocoapods.org/pods/ClusteringMarkers)
 [![License](https://img.shields.io/cocoapods/l/ClusteringMarkers.svg?style=flat)](https://cocoapods.org/pods/ClusteringMarkers)
 [![Platform](https://img.shields.io/cocoapods/p/ClusteringMarkers.svg?style=flat)](https://cocoapods.org/pods/ClusteringMarkers)

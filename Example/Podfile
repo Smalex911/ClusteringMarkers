@@ -1,6 +1,11 @@
 use_frameworks!
-target 'ClusteringMarkers_Tests' do
+
+target 'ClusteringMarkers_Example' do
   pod 'ClusteringMarkers', :path => '../'
-  
-  
+
+  target 'ClusteringMarkers_Tests' do
+    inherit! :search_paths
+
+    
+  end
 end

@@ -1,5 +1,9 @@
 PODS:
-  - ClusteringMarkers (0.1.0)
+  - ClusteringMarkers (0.1.1):
+    - YandexMapKit (~> 3.0)
+  - YandexMapKit (3.0.0):
+    - YandexRuntime (~> 3.0)
+  - YandexRuntime (3.0.0)
 
 DEPENDENCIES:
   - ClusteringMarkers (from `../`)
@@ -9,8 +13,10 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ClusteringMarkers: ae19da8c678b4fc9983e5ef2d191548591f8201c
+  ClusteringMarkers: ae2c954113c4ff2ba4f1dbe152c58da31970c93b
+  YandexMapKit: c32b57caf297c610917d6f4b66e416f07f1ca894
+  YandexRuntime: 3922beb365a8f0c8ff9bd7ee914eae3efbb8103b
 
-PODFILE CHECKSUM: 7bd7225f9a9311e25dd78c113b552bcf359f81ed
+PODFILE CHECKSUM: 8d6f0b1ce1d5b743132f48bdf35549af424fba27
 
 COCOAPODS: 1.4.0
