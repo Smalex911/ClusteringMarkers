@@ -3,6 +3,7 @@
 //  Created by Aleksandr Smorodov on 22.5.18.
 //
 
+import UIKit
 import YandexMapKit
 
 open class Cluster : Marker {

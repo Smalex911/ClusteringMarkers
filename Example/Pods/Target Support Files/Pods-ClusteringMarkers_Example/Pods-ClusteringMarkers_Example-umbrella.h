@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_ClusteringMarkers_TestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_ClusteringMarkers_TestsVersionString[];
+FOUNDATION_EXPORT double Pods_ClusteringMarkers_ExampleVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_ClusteringMarkers_ExampleVersionString[];
 

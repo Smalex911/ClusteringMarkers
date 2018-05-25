@@ -14,7 +14,7 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Copyright (c) 2018 Alex &lt;smorodov@vigroup.ru&gt;
+			<string>Copyright (c) 2018 Aleksandr &lt;alex11sm@mail.ru&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,26 @@ THE SOFTWARE.
 			<string>MIT</string>
 			<key>Title</key>
 			<string>ClusteringMarkers</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>https://yandex.ru/legal/maps_api/ 2016 © Yandex. All rights reserved.</string>
+			<key>License</key>
+			<string>Proprietary</string>
+			<key>Title</key>
+			<string>YandexMapKit</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>https://yandex.ru/legal/maps_api/ 2016 © Yandex. All rights reserved.</string>
+			<key>License</key>
+			<string>Proprietary</string>
+			<key>Title</key>
+			<string>YandexRuntime</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
