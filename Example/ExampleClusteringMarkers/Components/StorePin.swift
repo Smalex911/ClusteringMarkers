@@ -1,5 +1,5 @@
 //
-//  OwnMarker.swift
+//  StorePin.swift
 //  ClusteringMarkers_Example
 //
 //  Created by Александр Смородов on 23.05.2018.
@@ -9,17 +9,16 @@
 import YandexMapKit
 import ClusteringMarkers
 
-public class OwnMarker : Marker {
+public class StorePin : Pin {
     
-    override public var Coordinate: YMKPoint {
-        return Point
+    var store: Store? {
+        return object as? Store
     }
     
-    var Point: YMKPoint
-    
-    init(point: YMKPoint) {
-        self.Point = point
-        super.init()
+    override public var Coordinate: YMKPoint {
+        return YMKPoint(
+            latitude: store?.latitude ?? 0,
+            longitude: store?.longitude ?? 0)
     }
     
     override public var Icon: UIImage? {
@@ -31,6 +30,8 @@ public class OwnMarker : Marker {
     }
     
     override public func setIcon() {
-        Placemark?.setIconWith(IsSelected ? SelectedIcon : Icon)
+        if let icon = IsSelected ? SelectedIcon : Icon {
+            Placemark?.setIconWith(icon)
+        }
     }
 }

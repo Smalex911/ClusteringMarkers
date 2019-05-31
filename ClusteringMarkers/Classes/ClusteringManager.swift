@@ -1,12 +1,12 @@
 //
-//  FBClusteringManager.swift
+//  ClusteringManager.swift
 //  Created by Aleksandr Smorodov on 22.5.18.
 //
 
 import UIKit
 import YandexMapKit
 
-public class ClusteringManager<T:Cluster> {
+public class ClusteringManager {
     
     private var backingTree: QuadTree?
     private var tree: QuadTree? {
@@ -22,13 +22,14 @@ public class ClusteringManager<T:Cluster> {
     }
     private let lock = NSRecursiveLock()
     
-    public init() { }
+    var initiateCluster: ((_ coordinate: YMKPoint) -> Cluster)
+    lazy var zoomLevel = ZoomLevel()
     
-    public init(markers: [Marker]) {
-        add(markers: markers)
+    public init(initiateCluster: @escaping ((_ coordinate: YMKPoint) -> Cluster)) {
+        self.initiateCluster = initiateCluster
     }
     
-    public func add(markers:[Marker]){
+    public func add(markers: [Marker]){
         lock.lock()
         for marker in markers {
             _ = tree?.insert(marker: marker)
@@ -40,7 +41,7 @@ public class ClusteringManager<T:Cluster> {
         tree = nil
     }
     
-    public func replace(markers:[Marker]){
+    public func replace(markers: [Marker]){
         removeAll()
         add(markers: markers)
     }
@@ -48,7 +49,7 @@ public class ClusteringManager<T:Cluster> {
     public func allMarkers() -> [Marker] {
         var markers = [Marker]()
         lock.lock()
-        tree?.enumerateMarkersUsingBlock(){ obj in
+        tree?.enumerateMarkersUsingBlock() { obj in
             markers.append(obj)
         }
         lock.unlock()
@@ -57,10 +58,10 @@ public class ClusteringManager<T:Cluster> {
     
     public func clusteredMarkers(withinVisibleRegion region:YMKVisibleRegion, zoomScale: Float) -> [Marker] {
         
-        let size = ZoomLevel.cellSize(zoom: zoomScale)
+        let size = zoomLevel.cellSize(zoom: zoomScale)
         
-        let swZoom = region.getSouthWest(withZoomScale: zoomScale)
-        let neZoom = region.getNorthEast(withZoomScale: zoomScale)
+        let swZoom = region.getSouthWest(zoomLevel: zoomLevel, withZoomScale: zoomScale)
+        let neZoom = region.getNorthEast(zoomLevel: zoomLevel, withZoomScale: zoomScale)
         
         let minX = swZoom.latitude
         let maxX = neZoom.latitude
@@ -71,7 +72,7 @@ public class ClusteringManager<T:Cluster> {
         
         lock.lock()
         
-        if (zoomScale >= ZoomLevel.maxZoom) {
+        if (zoomScale >= zoomLevel.maxZoom) {
             let mapBox = BoundingBox(x0: minX, y0: minY, xf: maxX, yf: maxY)
             
             tree?.enumerateMarkers(inBox: mapBox) { obj in
@@ -109,7 +110,7 @@ public class ClusteringManager<T:Cluster> {
                             latitude: totalLatitude/Double(count),
                             longitude: totalLongitude/Double(count))
                         
-                        let cluster = T(coordinate: coordinate)
+                        let cluster = initiateCluster(coordinate)
                         cluster.markers = markers
                         clusteredMarkers.append(cluster)
                     }

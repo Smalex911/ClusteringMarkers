@@ -12,10 +12,11 @@
 		1F8F290820B5B72000DCC524 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8F290020B5B72000DCC524 /* LaunchScreen.storyboard */; };
 		1F8F290920B5B72000DCC524 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8F290220B5B72000DCC524 /* Main.storyboard */; };
 		1F8F290A20B5B72000DCC524 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F290420B5B72000DCC524 /* AppDelegate.swift */; };
-		1F8F290B20B5B72000DCC524 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1F8F290520B5B72000DCC524 /* Info.plist */; };
 		1F8F291920B5B92800DCC524 /* ClusteringMarkers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F8F291820B5B92800DCC524 /* ClusteringMarkers.framework */; };
-		1F8F291B20B5BDB400DCC524 /* OwnMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F291A20B5BDB400DCC524 /* OwnMarker.swift */; };
-		1F8F291D20B5BDC500DCC524 /* OwnCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F291C20B5BDC500DCC524 /* OwnCluster.swift */; };
+		1F8F291B20B5BDB400DCC524 /* StorePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F291A20B5BDB400DCC524 /* StorePin.swift */; };
+		1F8F291D20B5BDC500DCC524 /* StoreCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F291C20B5BDC500DCC524 /* StoreCluster.swift */; };
+		788C97AC22A1211B00B5F387 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788C97AB22A1211B00B5F387 /* Store.swift */; };
+		788C97B822A1285700B5F387 /* MapDataAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788C97B722A1285700B5F387 /* MapDataAdapter.swift */; };
 		DF631ED1A269A33C37D80E7F /* Pods_ClusteringMarkers_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9270FFC856DA5D6C8C30B496 /* Pods_ClusteringMarkers_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,9 +29,11 @@
 		1F8F290420B5B72000DCC524 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F8F290520B5B72000DCC524 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F8F291820B5B92800DCC524 /* ClusteringMarkers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ClusteringMarkers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F8F291A20B5BDB400DCC524 /* OwnMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnMarker.swift; sourceTree = "<group>"; };
-		1F8F291C20B5BDC500DCC524 /* OwnCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnCluster.swift; sourceTree = "<group>"; };
+		1F8F291A20B5BDB400DCC524 /* StorePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePin.swift; sourceTree = "<group>"; };
+		1F8F291C20B5BDC500DCC524 /* StoreCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCluster.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ClusteringMarkers_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClusteringMarkers_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		788C97AB22A1211B00B5F387 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		788C97B722A1285700B5F387 /* MapDataAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataAdapter.swift; sourceTree = "<group>"; };
 		7D2F4C1123164813B7AFA8DC /* Pods-ClusteringMarkers_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClusteringMarkers_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClusteringMarkers_Example/Pods-ClusteringMarkers_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9270FFC856DA5D6C8C30B496 /* Pods_ClusteringMarkers_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClusteringMarkers_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C14829692308DD85E85A871A /* ClusteringMarkers.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ClusteringMarkers.podspec; path = ../ClusteringMarkers.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -54,13 +57,11 @@
 		1F8F28FD20B5B72000DCC524 /* ExampleClusteringMarkers */ = {
 			isa = PBXGroup;
 			children = (
+				788C97AD22A1211F00B5F387 /* Data */,
 				1F8F291E20B5BDD300DCC524 /* Components */,
-				1F8F28FE20B5B72000DCC524 /* ViewController.swift */,
-				1F8F28FF20B5B72000DCC524 /* Assets.xcassets */,
-				1F8F290020B5B72000DCC524 /* LaunchScreen.storyboard */,
-				1F8F290220B5B72000DCC524 /* Main.storyboard */,
-				1F8F290420B5B72000DCC524 /* AppDelegate.swift */,
-				1F8F290520B5B72000DCC524 /* Info.plist */,
+				788C97A722A11E3600B5F387 /* DataAdapters */,
+				788C97A622A11E1F00B5F387 /* View Controllers */,
+				788C97A522A11E0400B5F387 /* Resources */,
 			);
 			path = ExampleClusteringMarkers;
 			sourceTree = "<group>";
@@ -68,8 +69,8 @@
 		1F8F291E20B5BDD300DCC524 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				1F8F291A20B5BDB400DCC524 /* OwnMarker.swift */,
-				1F8F291C20B5BDC500DCC524 /* OwnCluster.swift */,
+				1F8F291A20B5BDB400DCC524 /* StorePin.swift */,
+				1F8F291C20B5BDC500DCC524 /* StoreCluster.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -103,6 +104,42 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		788C97A522A11E0400B5F387 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1F8F290420B5B72000DCC524 /* AppDelegate.swift */,
+				1F8F28FF20B5B72000DCC524 /* Assets.xcassets */,
+				1F8F290520B5B72000DCC524 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		788C97A622A11E1F00B5F387 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1F8F28FE20B5B72000DCC524 /* ViewController.swift */,
+				1F8F290020B5B72000DCC524 /* LaunchScreen.storyboard */,
+				1F8F290220B5B72000DCC524 /* Main.storyboard */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		788C97A722A11E3600B5F387 /* DataAdapters */ = {
+			isa = PBXGroup;
+			children = (
+				788C97B722A1285700B5F387 /* MapDataAdapter.swift */,
+			);
+			path = DataAdapters;
+			sourceTree = "<group>";
+		};
+		788C97AD22A1211F00B5F387 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				788C97AB22A1211B00B5F387 /* Store.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		7DE2FFEACE5D830B6EBEFA7E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,7 +169,6 @@
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				3E6B1B21003B927E00ED6ABD /* [CP] Embed Pods Frameworks */,
 				BD1368E8E0A33DE2E5F7BF08 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -166,6 +202,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -184,7 +221,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F8F290B20B5B72000DCC524 /* Info.plist in Resources */,
 				1F8F290920B5B72000DCC524 /* Main.storyboard in Resources */,
 				1F8F290720B5B72000DCC524 /* Assets.xcassets in Resources */,
 				1F8F290820B5B72000DCC524 /* LaunchScreen.storyboard in Resources */,
@@ -210,24 +246,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3E6B1B21003B927E00ED6ABD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ClusteringMarkers_Example/Pods-ClusteringMarkers_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ClusteringMarkers/ClusteringMarkers.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ClusteringMarkers.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ClusteringMarkers_Example/Pods-ClusteringMarkers_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BD1368E8E0A33DE2E5F7BF08 /* [CP] Copy Pods Resources */ = {
@@ -257,9 +275,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F8F291B20B5BDB400DCC524 /* OwnMarker.swift in Sources */,
-				1F8F291D20B5BDC500DCC524 /* OwnCluster.swift in Sources */,
+				788C97AC22A1211B00B5F387 /* Store.swift in Sources */,
+				1F8F291B20B5BDB400DCC524 /* StorePin.swift in Sources */,
+				1F8F291D20B5BDC500DCC524 /* StoreCluster.swift in Sources */,
 				1F8F290A20B5B72000DCC524 /* AppDelegate.swift in Sources */,
+				788C97B822A1285700B5F387 /* MapDataAdapter.swift in Sources */,
 				1F8F290620B5B72000DCC524 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,13 +411,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = C538825TBW;
-				INFOPLIST_FILE = "$(SRCROOT)/ExampleClusteringMarkers/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ExampleClusteringMarkers/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -407,13 +427,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = C538825TBW;
-				INFOPLIST_FILE = "$(SRCROOT)/ExampleClusteringMarkers/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ExampleClusteringMarkers/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

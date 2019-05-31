@@ -8,10 +8,10 @@ import YandexMapKit
 
 public extension YMKVisibleRegion {
     
-    func getNorthEast(withZoomScale zoomScale: Float) -> YMKPoint {
-        let size = ZoomLevel.cellSize(zoom: zoomScale)
+    func getNorthEast(zoomLevel: ZoomLevel, withZoomScale zoomScale: Float) -> YMKPoint {
+        let size = zoomLevel.cellSize(zoom: zoomScale)
         
-        let swZoom = getSouthWest(withZoomScale: zoomScale)
+        let swZoom = getSouthWest(zoomLevel: zoomLevel, withZoomScale: zoomScale)
         
         let maxX = swZoom.latitude + ((self.NorthEast.latitude - swZoom.latitude) / size).rounded(.up) * size
         let maxY = swZoom.longitude + ((self.NorthEast.longitude - swZoom.longitude) / size).rounded(.up) * size
@@ -19,8 +19,8 @@ public extension YMKVisibleRegion {
         return YMKPoint(latitude: maxX, longitude: maxY)
     }
     
-    func getSouthWest(withZoomScale zoomScale: Float) -> YMKPoint {
-        let size = ZoomLevel.cellSize(zoom: zoomScale)
+    func getSouthWest(zoomLevel: ZoomLevel, withZoomScale zoomScale: Float) -> YMKPoint {
+        let size = zoomLevel.cellSize(zoom: zoomScale)
         
         let minX = (self.SouthWest.latitude / size).rounded(.down) * size
         let minY =  (self.SouthWest.longitude / size).rounded(.down) * size
@@ -28,11 +28,11 @@ public extension YMKVisibleRegion {
         return YMKPoint(latitude: minX, longitude: minY)
     }
     
-    func isInVisibleRegion(point: YMKPoint, zoom: Float) -> Bool {
-        return point.latitude > getSouthWest(withZoomScale: zoom).latitude
-            && point.latitude < getNorthEast(withZoomScale: zoom).latitude
-            && point.longitude > getSouthWest(withZoomScale: zoom).longitude
-            && point.longitude < getNorthEast(withZoomScale: zoom).longitude
+    func isInVisibleRegion(zoomLevel: ZoomLevel, point: YMKPoint, zoom: Float) -> Bool {
+        return point.latitude > getSouthWest(zoomLevel: zoomLevel, withZoomScale: zoom).latitude
+            && point.latitude < getNorthEast(zoomLevel: zoomLevel, withZoomScale: zoom).latitude
+            && point.longitude > getSouthWest(zoomLevel: zoomLevel, withZoomScale: zoom).longitude
+            && point.longitude < getNorthEast(zoomLevel: zoomLevel, withZoomScale: zoom).longitude
     }
     
     var NorthEast : YMKPoint {

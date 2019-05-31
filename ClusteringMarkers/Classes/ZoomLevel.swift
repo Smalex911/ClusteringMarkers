@@ -8,16 +8,17 @@ import YandexMapKit
 
 public class ZoomLevel {
     
-    public static var DEFAULT_CELL_SIZE : Double = 12
-    public static var DEFAULT_ZOOM : Float = 1
-    public static var DEFAULT_CAMERA_ZOOM : Float = 16
+    public var defaultCellZoom : Double = 12
+    public var defaultZoom : Float = 1
+    public var defaultCameraZoom : Float = 16
+    public var defaultUserLocationCameraZoom : Float = 13
     
     /**
      The dictionary of zoom and cell size.
      - Important:
      The size is calculated from 0 or the previous key to current.
     */
-    open static var gradationZoom: [Float: Double] = [
+    public var gradationZoom: [Float: Double] = [
         2 : 12,
         4.5 : 6,
         7 : 4.5,
@@ -37,42 +38,42 @@ public class ZoomLevel {
         Float.infinity : 1.0 / 5000.0,
     ]
     
-    public static var maxZoom : Float {
+    public var maxZoom : Float {
         get {
             return gradationZoom.keys.filter({$0 != Float.infinity}).sorted(by: {$0 > $1}).first ?? Float.infinity
         }
     }
     
-    static func cellSize(zoom: Float) -> Double {
+    func cellSize(zoom: Float) -> Double {
         if let key = gradationZoom.keys.sorted().first(where: {$0 > zoom}) {
-            return gradationZoom[key] ?? DEFAULT_CELL_SIZE
+            return gradationZoom[key] ?? defaultCellZoom
         }
-        return DEFAULT_CELL_SIZE
+        return defaultCellZoom
     }
     
-    public static func canZoomInCluster(currentZoom: Float, boundsZoom: Float) -> Bool {
+    public func canZoomInCluster(currentZoom: Float, boundsZoom: Float) -> Bool {
         let newCurrentZoom = getMoreThan(zoom: currentZoom)
         let newBoundsZoom = getMoreThan(zoom: boundsZoom)
         
         return newBoundsZoom > newCurrentZoom
     }
     
-    public static func zoomMoreThan(currentZoom: Float) -> Float {
+    public func zoomMoreThan(currentZoom: Float) -> Float {
         return getMoreThan(zoom: getMoreThan(zoom: currentZoom) + 0.001)
     }
     
-    public static func zoomInCluster(boundsZoom: Float) -> Float {
+    public func zoomInCluster(boundsZoom: Float) -> Float {
         if (boundsZoom > maxZoom) {
             return maxZoom
         }
         return boundsZoom
     }
     
-    public static func isDifferentZoom(lastZoom: Float, currentZoom: Float) -> Bool {
+    public func isDifferentZoom(lastZoom: Float, currentZoom: Float) -> Bool {
         return getMoreThan(zoom: lastZoom) != getMoreThan(zoom: currentZoom)
     }
     
-    private static func getMoreThan(zoom: Float) -> Float {
-        return gradationZoom.keys.sorted().first(where: {$0 > zoom}) ?? DEFAULT_ZOOM
+    private func getMoreThan(zoom: Float) -> Float {
+        return gradationZoom.keys.sorted().first(where: {$0 > zoom}) ?? defaultZoom
     }
 }

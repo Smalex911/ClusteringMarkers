@@ -1,5 +1,5 @@
 //
-//  FBAnnotationCluster.swift
+//  Cluster.swift
 //  Created by Aleksandr Smorodov on 22.5.18.
 //
 
