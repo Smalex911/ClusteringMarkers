@@ -353,7 +353,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     }
     
     
-    func setCityLocation(latitude: Double, longitude: Double) {
+    public func setCityLocation(latitude: Double, longitude: Double) {
         if let map = map {
             map.move(
                 with: YMKCameraPosition(
