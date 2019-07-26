@@ -61,6 +61,10 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         return Cluster(coordinate: coordinates)
     }
     
+    open func needScrollToTapPin() -> Bool {
+        return false
+    }
+    
     var lastSettingMarkersWork: DispatchWorkItem?
     
     var isNewMarkers: Bool = true
@@ -352,6 +356,15 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         }
     }
     
+    private func moveToPin(target: YMKPoint, fast: Bool = false) {
+        if let map = map {
+            move(
+                target: target,
+                zoom: map.cameraPosition.zoom >= zoomLevel.defaultCameraZoom
+                    ? map.cameraPosition.zoom : zoomLevel.defaultCameraZoom,
+                fast: fast)
+        }
+    }
     
     public func setCityLocation(latitude: Double, longitude: Double) {
         if let map = map {
@@ -377,13 +390,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 pin.IsSelected = true
                 selectedPin = pin
                 
-                if let map = mapView?.mapWindow.map {
-                    move(
-                        target: pin.Coordinate,
-                        zoom: map.cameraPosition.zoom >= zoomLevel.defaultCameraZoom
-                            ? map.cameraPosition.zoom : zoomLevel.defaultCameraZoom,
-                        fast: fast)
-                }
+                moveToPin(target: pin.Coordinate, fast: fast)
                 return
             }
         }
@@ -410,6 +417,10 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 
                 newSelectedPin.IsSelected = true
                 setSelectedPin(newSelectedPin)
+                
+                if needScrollToTapPin() {
+                    moveToPin(target: newSelectedPin.Coordinate)
+                }
             }
         } else {
             unselectPin(newSelectedPin: nil)
