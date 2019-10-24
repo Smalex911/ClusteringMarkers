@@ -29,6 +29,10 @@ open class Marker: Hashable {
         return Placemark?.isValid ?? true
     }
     
+    open var isVisible: Bool {
+        return Placemark?.isVisible ?? true
+    }
+    
     open var Coordinate: YMKPoint {
         return Placemark?.geometry ?? YMKPoint(latitude: 0, longitude: 0)
     }

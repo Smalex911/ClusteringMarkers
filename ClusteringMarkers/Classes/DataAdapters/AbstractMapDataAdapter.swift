@@ -51,6 +51,15 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         }
     }
     
+    
+    public var customLocation: Marker? {
+        didSet {
+            if let placemark = oldValue?.Placemark, placemark.isValid {
+                map?.mapObjects.remove(with: placemark)
+            }
+        }
+    }
+    
     var lastZoom: Float = 0
     
     open func initiatePin(object: AnyHashable) -> Pin? {
@@ -95,16 +104,34 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             var work: DispatchWorkItem!
             work = DispatchWorkItem { [weak self] in
                 let clusteringManager = self?.clusteringManager
+                let customLocation = self?.customLocation
                 
                 var pins: [Pin] = []
                 let bounds = withScroll ? BoundsMapMarkers() : nil
                 
+                var minDistancePin: Pin?
+                var minDistance: Double?
+                
                 objects.forEach { (object: AnyHashable) in
                     if let pin = self?.initiatePin(object: object) {
                         pins.append(pin)
-                        bounds?.addPoint(point: pin.Coordinate)
+                        
+                        if customLocation != nil {
+                            let dist = pin.Coordinate.distance(to: customLocation!.Coordinate)
+                            
+                            if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
+                                minDistancePin = pin
+                                minDistance = dist
+                            }
+                        } else {
+                            bounds?.addPoint(point: pin.Coordinate)
+                        }
                     }
                 }
+                if let pin = minDistancePin {
+                    bounds?.addPoint(point: pin.Coordinate)
+                }
+                
                 clusteringManager?.replace(markers: pins)
                 pins.forEach({$0.Placemark = nil})
                 
@@ -119,21 +146,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                         _self.pins = pins
                         _self.clusters.removeAll()
                         
-                        if let map = _self.mapView?.mapWindow.map, let bounds = bounds {
-                            if let userLocation = _self.userLocation {
-                                bounds.addPoint(point: userLocation)
-                            }
-                            
-                            let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
-                            
-                            var zoom = cameraPosition.zoom - 0.2
-                            if (zoom > zoomLevel.maxZoom) {
-                                zoom = zoomLevel.maxZoom
-                            }
-                            _self.move(target: cameraPosition.target, zoom: zoom, fast: true)
-                        } else {
-                            _self.updateMarkersInThread(afterSetMarkers: true)
-                        }
+                        _self.updateVisibleArea(bounds)
                     }
                 }
             }
@@ -142,6 +155,79 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             DispatchQueue.global(qos: .userInteractive).async(execute: work)
         } else {
             cleanMarkers()
+        }
+    }
+    
+    var lastSettingCustomLocationWork: DispatchWorkItem?
+    
+    open func setCustomLocation(marker: Marker?, withScroll: Bool) {
+        
+        customLocation = marker
+        
+        if !(lastSettingCustomLocationWork?.isCancelled ?? true) {
+            lastSettingCustomLocationWork?.cancel()
+        }
+        let zoomLevel = self.zoomLevel
+        
+        var work: DispatchWorkItem!
+        work = DispatchWorkItem { [weak self] in
+            let pins = self?.pins ?? []
+            
+            let bounds = withScroll ? BoundsMapMarkers() : nil
+            
+            if withScroll {
+                var minDistancePin: Pin?
+                var minDistance: Double?
+                
+                for pin in pins {
+                    if marker != nil {
+                        let dist = pin.Coordinate.distance(to: marker!.Coordinate)
+                        
+                        if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
+                            minDistancePin = pin
+                            minDistance = dist
+                        }
+                    } else {
+                        bounds?.addPoint(point: pin.Coordinate)
+                    }
+                }
+                
+                if let pin = minDistancePin {
+                    bounds?.addPoint(point: pin.Coordinate)
+                }
+            }
+            
+            if !work.isCancelled {
+                DispatchQueue.main.sync { [weak self] in
+                    self?.updateVisibleArea(bounds)
+                }
+            }
+        }
+        lastSettingCustomLocationWork = work
+        delegate?.willBeginUpdateMarkers()
+        DispatchQueue.global(qos: .userInteractive).async(execute: work)
+    }
+    
+    func updateVisibleArea(_ bounds: BoundsMapMarkers?) {
+        if let map = mapView?.mapWindow.map, let bounds = bounds {
+            
+            if let coordCustomLocation = customLocation?.Coordinate, (customLocation?.isVisible ?? false) || userLocation == nil {
+                bounds.addPoint(point: coordCustomLocation)
+            } else {
+                if let userLocation = userLocation {
+                    bounds.addPoint(point: userLocation)
+                }
+            }
+            
+            let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
+            
+            var zoom = cameraPosition.zoom - ((customLocation == nil) ? 0.2 : 1)
+            if (zoom > zoomLevel.maxZoom) {
+                zoom = zoomLevel.maxZoom
+            }
+            move(target: cameraPosition.target, zoom: zoom, fast: true)
+        } else {
+            updateMarkersInThread(afterSetMarkers: true)
         }
     }
     
@@ -249,6 +335,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                         _self.map?.mapObjects.clear()
                         _self.pins = pins
                         _self.clusters.removeAll()
+                        _self.customLocation?.Placemark = nil
                     }
                     
                     dictChangingPins.values.forEach({ (isNeedRemove, pin) in
@@ -294,6 +381,8 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                         }
                     })
                     
+                    _self.updateCustomLocation()
+                    
                     if _self.isNewMarkers {
                         _self.isNewMarkers = false
                         _self.delegate?.didEndUpdateMarkers(true)
@@ -306,6 +395,19 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         lastUpdatingMarkersWork = work
         delegate?.willBeginUpdateMarkers()
         DispatchQueue.global(qos: .userInteractive).async(execute: work)
+    }
+    
+    func updateCustomLocation() {
+        if let marker = customLocation {
+            var coords = marker.Coordinate
+            if coords.isZero, let ul = userLocation {
+                coords = ul
+            }
+            if !(marker.Placemark?.isValid ?? false), let placemark = map?.mapObjects.addEmptyPlacemark(with: coords) {
+                marker.Placemark = placemark
+            }
+            marker.Placemark?.isVisible = userLocation != nil ? marker.isVisible : !coords.isZero
+        }
     }
     
     public init(mapView: YMKMapView) {
@@ -492,5 +594,9 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     }
     
     open func onObjectUpdated(with view: YMKUserLocationView, event: YMKObjectEvent) {
+        
+        if type(of: event) == YMKUserLocationIconChanged.self {
+            updateCustomLocation()
+        }
     }
 }
