@@ -29,8 +29,12 @@ public class ClusteringManager {
         self.initiateCluster = initiateCluster
     }
     
-    public func add(markers: [Marker]){
+    public func add(markers: [Marker], replace: Bool = false) {
         lock.lock()
+        if replace {
+            removeAll()
+        }
+        
         for marker in markers {
             _ = tree?.insert(marker: marker)
         }
@@ -41,9 +45,8 @@ public class ClusteringManager {
         tree = nil
     }
     
-    public func replace(markers: [Marker]){
-        removeAll()
-        add(markers: markers)
+    public func replace(markers: [Marker]) {
+        add(markers: markers, replace: true)
     }
     
     public func allMarkers() -> [Marker] {

@@ -29,7 +29,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         clusteringManager?.zoomLevel = zoomLevel
     }
     
-    var didFirstScroll = false
+    public var didFirstGestureScroll = false
     
     var selectedPin: Pin? {
         didSet {
@@ -65,10 +65,19 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         return false
     }
     
+    open func needScrollWithSetMarkers() -> Bool {
+        return true
+    }
+    
     var lastSettingMarkersWork: DispatchWorkItem?
     
     var isNewMarkers: Bool = true
+    
     open func setMarkers(objects: [AnyHashable]) {
+        setMarkers(objects: objects, withScroll: needScrollWithSetMarkers())
+    }
+    
+    open func setMarkers(objects: [AnyHashable], withScroll: Bool) {
         
         if let selectedMarker = selectedPin, !objects.contains(where: {$0 == selectedMarker.object}) {
             setSelectedPin(nil)
@@ -88,12 +97,12 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 let clusteringManager = self?.clusteringManager
                 
                 var pins: [Pin] = []
-                let bounds = BoundsMapMarkers()
+                let bounds = withScroll ? BoundsMapMarkers() : nil
                 
                 objects.forEach { (object: AnyHashable) in
                     if let pin = self?.initiatePin(object: object) {
                         pins.append(pin)
-                        bounds.addPoint(point: pin.Coordinate)
+                        bounds?.addPoint(point: pin.Coordinate)
                     }
                 }
                 clusteringManager?.replace(markers: pins)
@@ -110,7 +119,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                         _self.pins = pins
                         _self.clusters.removeAll()
                         
-                        if let map = _self.mapView?.mapWindow.map {
+                        if let map = _self.mapView?.mapWindow.map, let bounds = bounds {
                             if let userLocation = _self.userLocation {
                                 bounds.addPoint(point: userLocation)
                             }
@@ -146,7 +155,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     }
     
     func cleanMarkers() {
-        didFirstScroll = false
+        didFirstGestureScroll = false
         
         map?.mapObjects.clear()
         clusteringManager?.removeAll()
@@ -325,7 +334,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     
     public func moveToCurrentLocation() {
         if let userLocation = userLocation {
-            move(target: YMKPoint(latitude: userLocation.latitude, longitude: userLocation.longitude), zoom: zoomLevel.defaultUserLocationCameraZoom, fast: false)
+            move(target: userLocation, zoom: zoomLevel.defaultUserLocationCameraZoom, fast: false)
         }
     }
     
@@ -341,6 +350,18 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         }
     }
     
+    public func setCityLocation(latitude: Double, longitude: Double) {
+        if let map = map {
+            move(target: YMKPoint(latitude: latitude, longitude: longitude), zoom: 8, fast: true)
+        }
+    }
+    
+    public func move(latitude: Double, longitude: Double, zoom: Float, fast: Bool = false) {
+        if let map = map {
+            move(target: YMKPoint(latitude: latitude, longitude: longitude), zoom: zoom, fast: fast)
+        }
+    }
+    
     private func move(target: YMKPoint, zoom: Float, fast: Bool = false) {
         if let map = map {
             map.move(
@@ -351,8 +372,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                     tilt: map.cameraPosition.tilt),
                 animationType: YMKAnimation(
                     type: fast ? .linear : .smooth,
-                    duration: fast ? 0 : 0.2),
-                cameraCallback: nil)
+                    duration: fast ? 0 : 0.2))
         }
     }
     
@@ -363,22 +383,6 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 zoom: map.cameraPosition.zoom >= zoomLevel.defaultCameraZoom
                     ? map.cameraPosition.zoom : zoomLevel.defaultCameraZoom,
                 fast: fast)
-        }
-    }
-    
-    public func setCityLocation(latitude: Double, longitude: Double) {
-        if let map = map {
-            map.move(
-                with: YMKCameraPosition(
-                    target: YMKPoint(latitude: latitude, longitude: longitude),
-                    zoom: 8,
-                    azimuth: map.cameraPosition.azimuth,
-                    tilt: map.cameraPosition.tilt),
-                animationType: YMKAnimation(
-                    type: YMKAnimationType.linear,
-                    duration: 0)) { (compleed) in
-                        self.didFirstScroll = false
-            }
         }
     }
     
@@ -446,8 +450,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 tilt: 0),
             animationType: YMKAnimation(
                 type: YMKAnimationType.linear,
-                duration: 0),
-            cameraCallback: nil)
+                duration: 0))
     }
     
     public func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
@@ -466,7 +469,9 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     }
     
     public func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateSource: YMKCameraUpdateSource, finished: Bool) {
-        didFirstScroll = true
+        if cameraUpdateSource == YMKCameraUpdateSource.gestures {
+            didFirstGestureScroll = true
+        }
         
         if finished {
             self.perform(#selector(updateMarkersAfterScroll), with: nil, afterDelay: 0.05)
