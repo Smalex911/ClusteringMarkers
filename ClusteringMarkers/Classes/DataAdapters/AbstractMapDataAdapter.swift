@@ -9,7 +9,24 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     
     public weak var delegate: MapDataDelegate?
     
-    public var mapView: YMKMapView?
+    public var mapView: YMKMapView? {
+        didSet {
+            initiateUserLocationSettings()
+        }
+    }
+    
+    var userLocationLayer: YMKUserLocationLayer?
+    
+    open func initiateUserLocationSettings() {
+        if let mapView = mapView {
+            let userLocationLayer = YMKMapKit.sharedInstance().createUserLocationLayer(with: mapView.mapWindow)
+            self.userLocationLayer = userLocationLayer
+            
+            userLocationLayer.setVisibleWithOn(true)
+            userLocationLayer.isHeadingEnabled = true
+            userLocationLayer.setObjectListenerWith(self)
+        }
+    }
     
     var map: YMKMap? {
         return mapView?.mapWindow.map
@@ -99,7 +116,6 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             if !(lastSettingMarkersWork?.isCancelled ?? true) {
                 lastSettingMarkersWork?.cancel()
             }
-            let zoomLevel = self.zoomLevel
             
             var work: DispatchWorkItem!
             work = DispatchWorkItem { [weak self] in
@@ -167,7 +183,6 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         if !(lastSettingCustomLocationWork?.isCancelled ?? true) {
             lastSettingCustomLocationWork?.cancel()
         }
-        let zoomLevel = self.zoomLevel
         
         var work: DispatchWorkItem!
         work = DispatchWorkItem { [weak self] in
@@ -233,10 +248,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     
     open var userLocation: YMKPoint? {
         get {
-            if let target = mapView?.mapWindow.map.userLocationLayer.cameraPosition()?.target {
-                return target
-            }
-            return nil
+            return userLocationLayer?.cameraPosition()?.target
         }
     }
     
@@ -416,6 +428,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         self.mapView = mapView
         initClusteringManager()
         initiateMapSettings()
+        initiateUserLocationSettings()
     }
     
     public init(bounds: CGRect) {
@@ -424,14 +437,13 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         self.mapView = YMKMapView(frame: bounds)
         initClusteringManager()
         initiateMapSettings()
+        initiateUserLocationSettings()
     }
     
     open func initiateMapSettings() {
         map?.addInputListener(with: self)
         map?.addCameraListener(with: self)
-        map?.userLocationLayer.setObjectListenerWith(self)
         map?.logo.setAlignmentWith(YMKLogoAlignment(horizontalAlignment: .left, verticalAlignment: .bottom))
-        map?.userLocationLayer.isEnabled = true
     }
     
     public func moveToCurrentLocation() {
@@ -453,13 +465,13 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     }
     
     public func setCityLocation(latitude: Double, longitude: Double) {
-        if let map = map {
+        if map != nil {
             move(target: YMKPoint(latitude: latitude, longitude: longitude), zoom: 8, fast: true)
         }
     }
     
     public func move(latitude: Double, longitude: Double, zoom: Float, fast: Bool = false) {
-        if let map = map {
+        if map != nil {
             move(target: YMKPoint(latitude: latitude, longitude: longitude), zoom: zoom, fast: fast)
         }
     }
