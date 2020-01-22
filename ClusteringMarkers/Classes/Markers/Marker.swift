@@ -51,13 +51,5 @@ open class Marker: Hashable {
         }
     }
     
-    open var Icon : UIImage? {
-        return nil
-    }
-    
-    open var SelectedIcon : UIImage? {
-        return nil
-    }
-    
     open func setIcon() { }
 }

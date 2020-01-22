@@ -21,17 +21,15 @@ public class StorePin : Pin {
             longitude: store?.longitude ?? 0)
     }
     
-    override public var Icon: UIImage? {
-        return #imageLiteral(resourceName: "mapPin")
-    }
-    
-    override public var SelectedIcon: UIImage? {
-        return #imageLiteral(resourceName: "mapPin-selected")
-    }
-    
     override public func setIcon() {
-        if let icon = IsSelected ? SelectedIcon : Icon {
-            Placemark?.setIconWith(icon)
+        if Placemark != nil {
+            let view = UIView()
+            view.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+            view.isOpaque = false
+            view.backgroundColor = IsSelected ? .black : .red
+            view.layer.cornerRadius = 10
+            
+            Placemark?.setViewWithView(YRTViewProvider(uiView: view))
         }
     }
 }

@@ -1,15 +1,15 @@
 PODS:
-  - ClusteringMarkers (0.1.2):
-    - YandexMapKit (~> 3.0)
-  - YandexMapKit (3.3.1):
-    - YandexRuntime (~> 3.3)
-  - YandexRuntime (3.3.1)
+  - ClusteringMarkers (0.2.2):
+    - YandexMapKit
+  - YandexMapKit (3.4):
+    - YandexRuntime (= 3.4)
+  - YandexRuntime (3.4)
 
 DEPENDENCIES:
   - ClusteringMarkers (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - YandexMapKit
     - YandexRuntime
 
@@ -18,10 +18,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ClusteringMarkers: 1fa1e808a16bdcadd178062eae4fff85df9aaeb6
-  YandexMapKit: d91d278f55fa5cced0a946b9ba33431fb5a9665d
-  YandexRuntime: d7aae40396f41c9b23b17fee1fe6164b886e3679
+  ClusteringMarkers: 53dc90ccb3345496c8e44e0f1ea73c3805420fd0
+  YandexMapKit: f222923561fe159dd8480d927f61950fc5ff3b8d
+  YandexRuntime: 2547d72a3ce4757f16ad188cfbe8a124ae13d806
 
 PODFILE CHECKSUM: 170001f1b04f4152c24ed10ffdbd56d83567c668
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.3
