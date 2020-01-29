@@ -10,7 +10,7 @@ import CoreLocation
 
 extension YMKPoint {
     
-    func distance(to point: YMKPoint) -> Double? {
+    public func distance(to point: YMKPoint) -> Double? {
         let loc1 = CLLocation(latitude: latitude, longitude: longitude)
         let loc2 = CLLocation(latitude: point.latitude, longitude: point.longitude)
         

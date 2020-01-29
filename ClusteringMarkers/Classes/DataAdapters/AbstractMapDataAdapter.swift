@@ -117,6 +117,8 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 lastSettingMarkersWork?.cancel()
             }
             
+            let userLocation = self.userLocation
+            
             var work: DispatchWorkItem!
             work = DispatchWorkItem { [weak self] in
                 let clusteringManager = self?.clusteringManager
@@ -125,28 +127,15 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 var pins: [Pin] = []
                 let bounds = withScroll ? BoundsMapMarkers() : nil
                 
-                var minDistancePin: Pin?
-                var minDistance: Double?
-                
-                objects.forEach { (object: AnyHashable) in
-                    if let pin = self?.initiatePin(object: object) {
-                        pins.append(pin)
-                        
-                        if customLocation != nil {
-                            let dist = pin.Coordinate.distance(to: customLocation!.Coordinate)
-                            
-                            if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
-                                minDistancePin = pin
-                                minDistance = dist
-                            }
-                        } else {
-                            bounds?.addPoint(point: pin.Coordinate)
+                self?.createVisibleArea(bounds, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
+                    
+                    objects.forEach { (object: AnyHashable) in
+                        if let pin = self?.initiatePin(object: object) {
+                            pins.append(pin)
+                            pinHandler(pin)
                         }
                     }
-                }
-                if let pin = minDistancePin {
-                    bounds?.addPoint(point: pin.Coordinate)
-                }
+                })
                 
                 clusteringManager?.replace(markers: pins)
                 pins.forEach({$0.Placemark = nil})
@@ -184,6 +173,8 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             lastSettingCustomLocationWork?.cancel()
         }
         
+        let userLocation = self.userLocation
+        
         var work: DispatchWorkItem!
         work = DispatchWorkItem { [weak self] in
             let pins = self?.pins ?? []
@@ -191,25 +182,12 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             let bounds = withScroll ? BoundsMapMarkers() : nil
             
             if withScroll {
-                var minDistancePin: Pin?
-                var minDistance: Double?
-                
-                for pin in pins {
-                    if marker != nil {
-                        let dist = pin.Coordinate.distance(to: marker!.Coordinate)
-                        
-                        if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
-                            minDistancePin = pin
-                            minDistance = dist
-                        }
-                    } else {
-                        bounds?.addPoint(point: pin.Coordinate)
+                self?.createVisibleArea(bounds, userLocation: userLocation, customMarker: marker, cycleHandler: { (pinHandler) in
+                    
+                    for pin in pins {
+                        pinHandler(pin)
                     }
-                }
-                
-                if let pin = minDistancePin {
-                    bounds?.addPoint(point: pin.Coordinate)
-                }
+                })
             }
             
             if !work.isCancelled {
@@ -221,6 +199,29 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         lastSettingCustomLocationWork = work
         delegate?.willBeginUpdateMarkers()
         DispatchQueue.global(qos: .userInteractive).async(execute: work)
+    }
+    
+    open func createVisibleArea(_ bounds: BoundsMapMarkers?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin)->Void)->Void)) {
+        
+        var minDistancePin: Pin?
+        var minDistance: Double?
+        
+        cycleHandler { pin in
+            if customMarker != nil {
+                let dist = pin.Coordinate.distance(to: customMarker!.Coordinate)
+                
+                if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
+                    minDistancePin = pin
+                    minDistance = dist
+                }
+            } else {
+                bounds?.addPoint(point: pin.Coordinate)
+            }
+        }
+        
+        if let pin = minDistancePin {
+            bounds?.addPoint(point: pin.Coordinate)
+        }
     }
     
     func updateVisibleArea(_ bounds: BoundsMapMarkers?) {
