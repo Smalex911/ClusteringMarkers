@@ -207,44 +207,64 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         var minDistance: Double?
         
         cycleHandler { pin in
-            if customMarker != nil {
-                let dist = pin.Coordinate.distance(to: customMarker!.Coordinate)
-                
-                if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
-                    minDistancePin = pin
-                    minDistance = dist
+            if bounds != nil {
+                if customMarker != nil {
+                    let dist = pin.Coordinate.distance(to: customMarker!.Coordinate)
+                    
+                    if minDistance == nil || (dist != nil && (dist ?? 0) < (minDistance ?? 0)) {
+                        minDistancePin = pin
+                        minDistance = dist
+                    }
+                } else {
+                    bounds?.addPoint(point: pin.Coordinate)
                 }
-            } else {
-                bounds?.addPoint(point: pin.Coordinate)
             }
         }
         
-        if let pin = minDistancePin {
-            bounds?.addPoint(point: pin.Coordinate)
+        if bounds != nil {
+            if let pin = minDistancePin {
+                bounds?.addPoint(point: pin.Coordinate)
+            }
+            
+            if let coordCustomLocation = customMarker?.Coordinate, (customMarker?.isVisible ?? false) || userLocation == nil {
+                bounds?.addPoint(point: coordCustomLocation)
+            } else {
+                if let userLocation = userLocation {
+                    bounds?.addPoint(point: userLocation)
+                }
+            }
         }
     }
     
     func updateVisibleArea(_ bounds: BoundsMapMarkers?) {
         if let map = mapView?.mapWindow.map, let bounds = bounds {
             
-            if let coordCustomLocation = customLocation?.Coordinate, (customLocation?.isVisible ?? false) || userLocation == nil {
-                bounds.addPoint(point: coordCustomLocation)
-            } else {
-                if let userLocation = userLocation {
-                    bounds.addPoint(point: userLocation)
-                }
-            }
-            
             let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
-            
-            var zoom = cameraPosition.zoom - ((customLocation == nil) ? 0.2 : 1)
-            if (zoom > zoomLevel.maxZoom) {
-                zoom = zoomLevel.maxZoom
-            }
-            move(target: cameraPosition.target, zoom: zoom, fast: true)
+            move(target: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: true)
         } else {
             updateMarkersInThread(afterSetMarkers: true)
         }
+    }
+    
+    open func zoomOutForBounds(_ zoom: Float) -> Float {
+        var zoom = zoom
+        
+        switch zoom {
+        case 16.5...Float.infinity:
+            zoom -= 1
+            break
+        case 9.5...16.5:
+            zoom -= ((1 - 0.2) * zoom + (16.5 * 0.2 - 9.5 * 1)) / (16.5 - 9.5)
+            break
+        default:
+            zoom -= 0.2
+            break
+        }
+        
+        if (zoom > zoomLevel.maxZoom) {
+            return zoomLevel.maxZoom
+        }
+        return zoom
     }
     
     open var userLocation: YMKPoint? {
