@@ -5,14 +5,28 @@
 
 import UIKit
 
-public class ClusterViewConfiguration {
+open class ClusterViewConfiguration {
     
-    static var MAX_COUNT : Double = 50
-    static var MIN_COUNT : Double = 3
-    static var MAX_RECT_SIZE : Double = 40
-    static var MIN_RECT_SIZE : Double = 20
-    static var MAX_FONT_SIZE : Double = 15
-    static var MIN_FONT_SIZE : Double = 12
+    open var maxLimitCount: Double {
+        return 50
+    }
+    open var minLimitCount: Double {
+        return 3
+    }
+    
+    open var maxDiametr: Double {
+        return 40
+    }
+    open var minDiametr: Double {
+        return 20
+    }
+    
+    open var maxFont: Double {
+        return 15
+    }
+    open var minFont: Double {
+        return 12
+    }
     
     public var displayedLabel : UILabel?
     public var contentView : UIView?
@@ -65,28 +79,28 @@ public class ClusterViewConfiguration {
     
     public  func getRect(number: Double) -> CGRect {
         switch number {
-        case ClusterViewConfiguration.MAX_COUNT...Double.infinity:
-            return CGRect(x: 0, y: 0, width: ClusterViewConfiguration.MAX_RECT_SIZE, height: ClusterViewConfiguration.MAX_RECT_SIZE)
-        case ClusterViewConfiguration.MIN_COUNT...ClusterViewConfiguration.MAX_COUNT:
-            let size = getSize(number: number, minSize: ClusterViewConfiguration.MIN_RECT_SIZE, maxSize: ClusterViewConfiguration.MAX_RECT_SIZE)
+        case maxLimitCount...Double.infinity:
+            return CGRect(x: 0, y: 0, width: maxDiametr, height: maxDiametr)
+        case minLimitCount...maxLimitCount:
+            let size = getSize(number: number, minSize: minDiametr, maxSize: maxDiametr)
             return CGRect(x: 0.0, y: 0.0, width: size, height: size)
         default:
-            return CGRect(x: 0, y: 0, width: ClusterViewConfiguration.MIN_RECT_SIZE, height: ClusterViewConfiguration.MIN_RECT_SIZE)
+            return CGRect(x: 0, y: 0, width: minDiametr, height: minDiametr)
         }
     }
     
     public func getFontSize(number: Double) -> CGFloat {
         switch number {
-        case ClusterViewConfiguration.MAX_COUNT...Double.infinity:
-            return CGFloat(ClusterViewConfiguration.MAX_FONT_SIZE)
-        case ClusterViewConfiguration.MIN_COUNT...ClusterViewConfiguration.MAX_COUNT:
-            return CGFloat(getSize(number: number, minSize: ClusterViewConfiguration.MIN_FONT_SIZE, maxSize: ClusterViewConfiguration.MAX_FONT_SIZE))
+        case maxLimitCount...Double.infinity:
+            return CGFloat(maxFont)
+        case minLimitCount...maxLimitCount:
+            return CGFloat(getSize(number: number, minSize: minFont, maxSize: maxFont))
         default:
-            return CGFloat(ClusterViewConfiguration.MIN_FONT_SIZE)
+            return CGFloat(minFont)
         }
     }
     
     private func getSize(number: Double, minSize: Double, maxSize: Double) -> Double {
-        return ((maxSize - minSize) * number + (ClusterViewConfiguration.MAX_COUNT * minSize - ClusterViewConfiguration.MIN_COUNT * maxSize)) / (ClusterViewConfiguration.MAX_COUNT - ClusterViewConfiguration.MIN_COUNT)
+        return ((maxSize - minSize) * number + (maxLimitCount * minSize - minLimitCount * maxSize)) / (maxLimitCount - minLimitCount)
     }
 }
