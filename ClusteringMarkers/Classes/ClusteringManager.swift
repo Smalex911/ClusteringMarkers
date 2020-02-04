@@ -22,10 +22,10 @@ public class ClusteringManager {
     }
     private let lock = NSRecursiveLock()
     
-    var initiateCluster: ((_ coordinate: YMKPoint) -> Cluster)
+    var initiateCluster: ((_ coordinate: YMKPoint) -> Cluster?)
     lazy var zoomLevel = ZoomLevel()
     
-    public init(initiateCluster: @escaping ((_ coordinate: YMKPoint) -> Cluster)) {
+    public init(initiateCluster: @escaping ((_ coordinate: YMKPoint) -> Cluster?)) {
         self.initiateCluster = initiateCluster
     }
     
@@ -113,9 +113,12 @@ public class ClusteringManager {
                             latitude: totalLatitude/Double(count),
                             longitude: totalLongitude/Double(count))
                         
-                        let cluster = initiateCluster(coordinate)
-                        cluster.markers = markers
-                        clusteredMarkers.append(cluster)
+                        if let cluster = initiateCluster(coordinate) {
+                            cluster.markers = markers
+                            clusteredMarkers.append(cluster)
+                        } else {
+                            clusteredMarkers.append(contentsOf: markers)
+                        }
                     }
                     
                     y0 += size

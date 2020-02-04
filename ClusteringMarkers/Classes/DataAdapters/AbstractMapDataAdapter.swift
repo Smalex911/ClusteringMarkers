@@ -40,8 +40,8 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     var clusteringManager: ClusteringManager?
     
     func initClusteringManager() {
-        clusteringManager = ClusteringManager(initiateCluster: { (coordinates) in
-            return self.initiateCluster(coordinates: coordinates)
+        clusteringManager = ClusteringManager(initiateCluster: { [weak self] (coordinates) in
+            return self?.initiateCluster(coordinates: coordinates)
         })
         clusteringManager?.zoomLevel = zoomLevel
     }
@@ -121,16 +121,18 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             
             var work: DispatchWorkItem!
             work = DispatchWorkItem { [weak self] in
-                let clusteringManager = self?.clusteringManager
-                let customLocation = self?.customLocation
+                guard let _self = self else { return }
+                
+                let clusteringManager = _self.clusteringManager
+                let customLocation = _self.customLocation
                 
                 var pins: [Pin] = []
                 let bounds = withScroll ? BoundsMapMarkers() : nil
                 
-                self?.createVisibleArea(bounds, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
+                self?.createVisibleArea(bounds, userLocation: userLocation, customMarker: customLocation, cycleHandler: { [weak self] (pinHandler) in
                     
                     objects.forEach { (object: AnyHashable) in
-                        if let pin = self?.initiatePin(object: object) {
+                        if let pin = _self.initiatePin(object: object) {
                             pins.append(pin)
                             pinHandler(pin)
                         }
@@ -142,10 +144,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                 
                 if !work.isCancelled {
                     DispatchQueue.main.sync { [weak self] in
-                        
-                        guard let _self = self else {
-                            return
-                        }
+                        guard let _self = self else { return }
                         
                         _self.map?.mapObjects.clear()
                         _self.pins = pins
@@ -177,12 +176,13 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         
         var work: DispatchWorkItem!
         work = DispatchWorkItem { [weak self] in
-            let pins = self?.pins ?? []
+            guard let _self = self else { return }
             
+            let pins = _self.pins ?? []
             let bounds = withScroll ? BoundsMapMarkers() : nil
             
             if withScroll {
-                self?.createVisibleArea(bounds, userLocation: userLocation, customMarker: marker, cycleHandler: { (pinHandler) in
+                _self.createVisibleArea(bounds, userLocation: userLocation, customMarker: marker, cycleHandler: { [weak self] (pinHandler) in
                     
                     for pin in pins {
                         pinHandler(pin)
@@ -206,7 +206,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         var minDistancePin: Pin?
         var minDistance: Double?
         
-        cycleHandler { pin in
+        cycleHandler { [weak self] pin in
             if bounds != nil {
                 if customMarker != nil {
                     let dist = pin.Coordinate.distance(to: customMarker!.Coordinate)
@@ -268,9 +268,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
     }
     
     open var userLocation: YMKPoint? {
-        get {
-            return userLocationLayer?.cameraPosition()?.target
-        }
+        return userLocationLayer?.cameraPosition()?.target
     }
     
     func cleanMarkers() {
@@ -300,19 +298,15 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
         if !(lastUpdatingMarkersWork?.isCancelled ?? true) {
             lastUpdatingMarkersWork?.cancel()
         }
-        guard let visibleRegion = mapView?.mapWindow.focusRegion else {
-            return
-        }
+        guard let visibleRegion = mapView?.mapWindow.focusRegion else { return }
+        
         let currentZoom = map?.cameraPosition.zoom
         let lastZoom = self.lastZoom
         let zoomLevel = self.zoomLevel
         
         var work: DispatchWorkItem!
         work = DispatchWorkItem { [weak self] in
-            
-            guard let _self = self, let clusteringManager = _self.clusteringManager else {
-                return
-            }
+            guard let _self = self, let clusteringManager = _self.clusteringManager else { return }
             
             let pins = _self.pins
             var dictChangingPins: [YMKPoint: (Bool, Pin)] = [:]
@@ -359,10 +353,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
             
             if !work.isCancelled {
                 DispatchQueue.main.sync { [weak self] in
-                    
-                    guard let _self = self else {
-                        return
-                    }
+                    guard let _self = self else { return }
                     
                     if needAllClean {
                         _self.map?.mapObjects.clear()
@@ -371,7 +362,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                         _self.customLocation?.Placemark = nil
                     }
                     
-                    dictChangingPins.values.forEach({ (isNeedRemove, pin) in
+                    dictChangingPins.values.forEach { (isNeedRemove, pin) in
                         if isNeedRemove {
                             if let placemark = pin.Placemark, placemark.isValid {
                                 _self.map?.mapObjects.remove(with: placemark)
@@ -389,9 +380,9 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                                 placemark.addTapListener(with: _self)
                             }
                         }
-                    })
+                    }
                     
-                    dictChangingClusters.forEach({ (cluster, type) in
+                    dictChangingClusters.forEach { (cluster, type) in
                         switch type {
                         case .needRemove:
                             if let placemark = cluster.Placemark, placemark.isValid {
@@ -412,7 +403,7 @@ open class AbstractMapDataAdapter: NSObject, YMKMapObjectTapListener, YMKMapInpu
                         case .doNothing:
                             break
                         }
-                    })
+                    }
                     
                     _self.updateCustomLocation()
                     
