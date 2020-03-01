@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import ClusteringMarkers
 
-public class Store: Hashable {
+public class Store: Hashable, IPinObject {
     
     public static func == (lhs: Store, rhs: Store) -> Bool {
         return lhs.hashValue == rhs.hashValue
@@ -19,11 +20,15 @@ public class Store: Hashable {
         longitude.hash(into: &hasher)
     }
     
-    var latitude: Double
-    var longitude: Double
+    public var latitude: Double?
+    public var longitude: Double?
     
     init(latitude: Double, longitude: Double) {
         self.latitude = latitude
         self.longitude = longitude
+    }
+    
+    public func isEqual(to object: IPinObject?) -> Bool {
+        return self == (object as? Store)
     }
 }

@@ -5,6 +5,7 @@
 
 import UIKit
 import YandexMapKit
+import AlamofireImage
 
 open class Marker: Hashable {
     
@@ -45,11 +46,30 @@ open class Marker: Hashable {
             && pl.geometry.longitude == placemark.geometry.longitude
     }
     
-    open var IsSelected: Bool = false {
+    open var isSelected: Bool = false {
         didSet {
             setIcon()
         }
     }
     
     open func setIcon() { }
+    
+    
+    public var imageCache: AutoPurgingImageCache?
+    
+    public func setCachedImage(withIdentifier identifier: String, imageIfNotCached: (() -> UIImage?)) {
+        
+        let identifier = "marker-\(identifier)"
+        
+        if let image = imageCache?.image(withIdentifier: identifier) {
+            Placemark?.setIconWith(image)
+            
+        } else if let image = imageIfNotCached() {
+            imageCache?.add(image, withIdentifier: identifier)
+            Placemark?.setIconWith(image)
+            
+        } else {
+            imageCache?.removeImage(withIdentifier: identifier)
+        }
+    }
 }

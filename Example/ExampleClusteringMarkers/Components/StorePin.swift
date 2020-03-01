@@ -11,25 +11,37 @@ import ClusteringMarkers
 
 public class StorePin : Pin {
     
-    var store: Store? {
-        return object as? Store
-    }
-    
-    override public var Coordinate: YMKPoint {
-        return YMKPoint(
-            latitude: store?.latitude ?? 0,
-            longitude: store?.longitude ?? 0)
-    }
-    
     override public func setIcon() {
         if Placemark != nil {
-            let view = UIView()
-            view.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-            view.isOpaque = false
-            view.backgroundColor = IsSelected ? .black : .red
-            view.layer.cornerRadius = 10
             
-            Placemark?.setViewWithView(YRTViewProvider(uiView: view))
+            let text = "lat \(Int((object?.latitude ?? 0) * 100))"
+            
+            setCachedImage(withIdentifier: "\(text)-\(isSelected)") { () -> UIImage? in
+                
+//MARK: Setting icon by view as Image (best solution)
+                return pinView(text, isSelected: isSelected).snapshot()
+                
+//MARK: Setting icon as Image (cache is not cleared automatically)
+//                return pinImage(text, isSelected: IsSelected)
+            }
+            
+//MARK: Setting icon as Image without cache (image generation cache is not cleared automatically)
+//            Placemark?.setIconWith(pinImage(text, isSelected: IsSelected)!)
+            
+//MARK: Setting icon as View (spends a lot of time drawing, no access to cache)
+//            Placemark?.setViewWithView(pinYRTView(text, isSelected: IsSelected))
         }
+    }
+    
+    func pinImage(_ text: String, isSelected: Bool) -> UIImage? {
+        return StorePinImage.image(text: text, isSelected: isSelected)
+    }
+
+    func pinView(_ text: String, isSelected: Bool) -> UIView {
+        return StorePinView(text: text, isSelected: isSelected)
+    }
+    
+    func pinYRTView(_ text: String, isSelected: Bool) -> YRTViewProvider {
+        return YRTViewProvider(uiView: pinView(text, isSelected: isSelected), cacheable: false)!
     }
 }

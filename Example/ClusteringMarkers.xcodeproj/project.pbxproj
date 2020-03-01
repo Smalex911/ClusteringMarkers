@@ -7,22 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F8F290620B5B72000DCC524 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F28FE20B5B72000DCC524 /* ViewController.swift */; };
+		1F8F290620B5B72000DCC524 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F28FE20B5B72000DCC524 /* MapViewController.swift */; };
 		1F8F290720B5B72000DCC524 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F8F28FF20B5B72000DCC524 /* Assets.xcassets */; };
 		1F8F290820B5B72000DCC524 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8F290020B5B72000DCC524 /* LaunchScreen.storyboard */; };
 		1F8F290920B5B72000DCC524 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F8F290220B5B72000DCC524 /* Main.storyboard */; };
 		1F8F290A20B5B72000DCC524 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F290420B5B72000DCC524 /* AppDelegate.swift */; };
 		1F8F291920B5B92800DCC524 /* ClusteringMarkers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F8F291820B5B92800DCC524 /* ClusteringMarkers.framework */; };
 		1F8F291B20B5BDB400DCC524 /* StorePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F291A20B5BDB400DCC524 /* StorePin.swift */; };
-		1F8F291D20B5BDC500DCC524 /* StoreCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F291C20B5BDC500DCC524 /* StoreCluster.swift */; };
+		7858CB062407E001008168F7 /* StorePinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7858CB052407E001008168F7 /* StorePinView.swift */; };
+		7858CB0C2407F823008168F7 /* StorePinImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7858CB0B2407F823008168F7 /* StorePinImage.swift */; };
+		7858CB13240831BD008168F7 /* StoreClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7858CB12240831BD008168F7 /* StoreClusterView.swift */; };
+		7858CB1724084F1C008168F7 /* StoreClusterStyler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7858CB1624084F1C008168F7 /* StoreClusterStyler.swift */; };
 		788C97AC22A1211B00B5F387 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788C97AB22A1211B00B5F387 /* Store.swift */; };
 		788C97B822A1285700B5F387 /* MapDataAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788C97B722A1285700B5F387 /* MapDataAdapter.swift */; };
+		78A616902406A8E10023B4CA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A6168F2406A8E10023B4CA /* WelcomeViewController.swift */; };
 		DF631ED1A269A33C37D80E7F /* Pods_ClusteringMarkers_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9270FFC856DA5D6C8C30B496 /* Pods_ClusteringMarkers_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02A4083DEF6472F20E0A6782 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		1F8F28FE20B5B72000DCC524 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1F8F28FE20B5B72000DCC524 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		1F8F28FF20B5B72000DCC524 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F8F290120B5B72000DCC524 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F8F290320B5B72000DCC524 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -30,10 +34,14 @@
 		1F8F290520B5B72000DCC524 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F8F291820B5B92800DCC524 /* ClusteringMarkers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ClusteringMarkers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F8F291A20B5BDB400DCC524 /* StorePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePin.swift; sourceTree = "<group>"; };
-		1F8F291C20B5BDC500DCC524 /* StoreCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCluster.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ClusteringMarkers_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClusteringMarkers_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7858CB052407E001008168F7 /* StorePinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePinView.swift; sourceTree = "<group>"; };
+		7858CB0B2407F823008168F7 /* StorePinImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePinImage.swift; sourceTree = "<group>"; };
+		7858CB12240831BD008168F7 /* StoreClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreClusterView.swift; sourceTree = "<group>"; };
+		7858CB1624084F1C008168F7 /* StoreClusterStyler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreClusterStyler.swift; sourceTree = "<group>"; };
 		788C97AB22A1211B00B5F387 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		788C97B722A1285700B5F387 /* MapDataAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataAdapter.swift; sourceTree = "<group>"; };
+		78A6168F2406A8E10023B4CA /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		7D2F4C1123164813B7AFA8DC /* Pods-ClusteringMarkers_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClusteringMarkers_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClusteringMarkers_Example/Pods-ClusteringMarkers_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9270FFC856DA5D6C8C30B496 /* Pods_ClusteringMarkers_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClusteringMarkers_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C14829692308DD85E85A871A /* ClusteringMarkers.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ClusteringMarkers.podspec; path = ../ClusteringMarkers.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -70,7 +78,10 @@
 			isa = PBXGroup;
 			children = (
 				1F8F291A20B5BDB400DCC524 /* StorePin.swift */,
-				1F8F291C20B5BDC500DCC524 /* StoreCluster.swift */,
+				7858CB052407E001008168F7 /* StorePinView.swift */,
+				7858CB0B2407F823008168F7 /* StorePinImage.swift */,
+				7858CB12240831BD008168F7 /* StoreClusterView.swift */,
+				7858CB1624084F1C008168F7 /* StoreClusterStyler.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -117,7 +128,8 @@
 		788C97A622A11E1F00B5F387 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1F8F28FE20B5B72000DCC524 /* ViewController.swift */,
+				78A6168F2406A8E10023B4CA /* WelcomeViewController.swift */,
+				1F8F28FE20B5B72000DCC524 /* MapViewController.swift */,
 				1F8F290020B5B72000DCC524 /* LaunchScreen.storyboard */,
 				1F8F290220B5B72000DCC524 /* Main.storyboard */,
 			);
@@ -170,6 +182,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				E9C5C2F06FD9CC9F79B084D1 /* [CP] Copy Pods Resources */,
+				6E0EDE614BC35140584E2BF0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -248,6 +261,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6E0EDE614BC35140584E2BF0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ClusteringMarkers_Example/Pods-ClusteringMarkers_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ClusteringMarkers_Example/Pods-ClusteringMarkers_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E9C5C2F06FD9CC9F79B084D1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -277,10 +310,14 @@
 			files = (
 				788C97AC22A1211B00B5F387 /* Store.swift in Sources */,
 				1F8F291B20B5BDB400DCC524 /* StorePin.swift in Sources */,
-				1F8F291D20B5BDC500DCC524 /* StoreCluster.swift in Sources */,
+				7858CB0C2407F823008168F7 /* StorePinImage.swift in Sources */,
 				1F8F290A20B5B72000DCC524 /* AppDelegate.swift in Sources */,
+				7858CB062407E001008168F7 /* StorePinView.swift in Sources */,
+				7858CB1724084F1C008168F7 /* StoreClusterStyler.swift in Sources */,
 				788C97B822A1285700B5F387 /* MapDataAdapter.swift in Sources */,
-				1F8F290620B5B72000DCC524 /* ViewController.swift in Sources */,
+				1F8F290620B5B72000DCC524 /* MapViewController.swift in Sources */,
+				78A616902406A8E10023B4CA /* WelcomeViewController.swift in Sources */,
+				7858CB13240831BD008168F7 /* StoreClusterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

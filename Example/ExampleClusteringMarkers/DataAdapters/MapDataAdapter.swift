@@ -7,20 +7,20 @@
 //
 
 import UIKit
-import YandexMapKit
 import ClusteringMarkers
+import AlamofireImage
 
 class MapDataAdapter: AbstractMapDataAdapter {
     
-    override func initiatePin(object: AnyHashable) -> Pin? {
-        if let store = object as? Store {
-            return StorePin(store)
-        }
-        return nil
+    override func initiatePin(object: IPinObject) -> Pin? {
+        return StorePin(object)
     }
-    
-    override func initiateCluster(coordinates: YMKPoint) -> Cluster {
-        return StoreCluster(coordinate: coordinates)
+
+    override func styleCluster(with cluster: Cluster, imageCache: AutoPurgingImageCache?) {
+
+        cluster.setCachedImage(withIdentifier: "\(cluster.size)", imageCache: imageCache) { () -> UIImage? in
+            return StoreClusterView(number: cluster.size, displayedText: "\(cluster.size)").snapshot()
+        }
     }
     
 }

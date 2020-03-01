@@ -1,5 +1,9 @@
 PODS:
-  - ClusteringMarkers (0.2.2):
+  - Alamofire (4.9.1)
+  - AlamofireImage (3.6.0):
+    - Alamofire (~> 4.9)
+  - ClusteringMarkers (0.2.3):
+    - AlamofireImage
     - YandexMapKit
   - YandexMapKit (3.4):
     - YandexRuntime (= 3.4)
@@ -10,6 +14,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
+    - AlamofireImage
     - YandexMapKit
     - YandexRuntime
 
@@ -18,10 +24,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ClusteringMarkers: 53dc90ccb3345496c8e44e0f1ea73c3805420fd0
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
+  ClusteringMarkers: e06d1e2f91667c0741dec6e47849e068a11440be
   YandexMapKit: f222923561fe159dd8480d927f61950fc5ff3b8d
   YandexRuntime: 2547d72a3ce4757f16ad188cfbe8a124ae13d806
 
-PODFILE CHECKSUM: 170001f1b04f4152c24ed10ffdbd56d83567c668
+PODFILE CHECKSUM: bd11dfaf01c873b9f01dadba321637b23d0ee008
 
 COCOAPODS: 1.8.3

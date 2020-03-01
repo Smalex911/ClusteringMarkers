@@ -1,5 +1,5 @@
 //
-//  Ext+YMKPoint.swift
+//  YMKPoint+ClusteringMarkers.swift
 //  ClusteringMarkers
 //
 //  Created by Александр Смородов on 23.10.2019.
