@@ -30,8 +30,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mapDataAdapter = MapDataAdapter(mapView: mapView)
-        mapDataAdapter?.delegate = self
+        mapDataAdapter = MapDataAdapter(mapView: mapView, delegate: self)
         
         let stores = createStores()
         mapDataAdapter?.setMarkers(with: stores, withMoveToBounds: true)
@@ -68,25 +67,13 @@ class MapViewController: UIViewController {
     }
 }
 
-extension MapViewController: MapDataDelegate {
+extension MapViewController: CMDelegate {
     
-    func didSelect(with pin: Pin?) {
+    func mapDataAdapter(_ mapDataAdapter: CMDataAdapter, didSelectPin pin: Pin?) {
         if let store = pin?.object as? Store {
-            print("\(store.latitude) \(store.longitude)")
+            print("\(store.pinLatitude) \(store.pinLongitude)")
         } else {
             print("pin deselected")
         }
-    }
-    
-    func didTap(with pin: Pin) -> Bool {
-        mapDataAdapter?.move(with: pin, targetZoom: 16)
-        print("did tap on pin")
-        return true
-    }
-    
-    func didTap(with cluster: Cluster) -> Bool {
-        mapDataAdapter?.move(with: cluster)
-        print("did tap on cluster")
-        return true
     }
 }

@@ -10,10 +10,6 @@ import ClusteringMarkers
 
 class StoreClusterView: ClusterView {
     
-    override var maxLimitCount: UInt {
-        return 100
-    }
-    
     override var maxDiametr: Double {
         return 45
     }
@@ -36,9 +32,7 @@ class StoreClusterView: ClusterView {
     
     override func styleLabel() {
         
-        let rect = getRect()
-        
-        displayedLabel.frame = CGRect(x: rect.minX, y: rect.minY, width: rect.width, height: rect.height + 1)
+        displayedLabel.frame = getRect()
         displayedLabel.font = font
         displayedLabel.textColor = .white
         displayedLabel.textAlignment = .center

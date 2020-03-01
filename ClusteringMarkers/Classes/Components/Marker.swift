@@ -57,16 +57,16 @@ open class Marker: Hashable {
     
     public var imageCache: AutoPurgingImageCache?
     
-    public func setCachedImage(withIdentifier identifier: String, imageIfNotCached: (() -> UIImage?)) {
+    public func setCachedImage(withIdentifier identifier: String, style: YMKIconStyle = YMKIconStyle(), imageIfNotCached: (() -> UIImage?)) {
         
         let identifier = "marker-\(identifier)"
         
         if let image = imageCache?.image(withIdentifier: identifier) {
-            Placemark?.setIconWith(image)
+            Placemark?.setIconWith(image, style: style)
             
         } else if let image = imageIfNotCached() {
             imageCache?.add(image, withIdentifier: identifier)
-            Placemark?.setIconWith(image)
+            Placemark?.setIconWith(image, style: style)
             
         } else {
             imageCache?.removeImage(withIdentifier: identifier)

@@ -1,27 +1,28 @@
 //
-//  AbstractMapDataAdapter.swift
+//  CMDataAdapter.swift
 //  Created by Aleksandr Smorodov on 31.5.19.
 //
 
 import YandexMapKit
 import AlamofireImage
 
-open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, YMKMapObjectTapListener, YMKMapInputListener, YMKMapCameraListener, YMKUserLocationObjectListener {
-    
-    public weak var delegate: MapDataDelegate?
+open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, YMKMapObjectTapListener, YMKMapInputListener, YMKMapCameraListener, YMKUserLocationObjectListener {
     
     public var didFirstGestureScroll = false
     
     
     //MARK: - Initialization
     
+    public weak var delegate: CMDelegate?
     var imageCache: AutoPurgingImageCache?
     
     public init(
         mapView: YMKMapView,
-        imageCache: AutoPurgingImageCache? = AutoPurgingImageCache()
+        imageCache: AutoPurgingImageCache? = AutoPurgingImageCache(),
+        delegate: CMDelegate
     ) {
         self.imageCache = imageCache
+        self.delegate = delegate
         
         super.init()
         
@@ -34,9 +35,14 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
     
     public convenience init(
         bounds: CGRect,
-        imageCache: AutoPurgingImageCache? = AutoPurgingImageCache()
+        imageCache: AutoPurgingImageCache? = AutoPurgingImageCache(),
+        delegate: CMDelegate
     ) {
-        self.init(mapView: YMKMapView(frame: bounds), imageCache: imageCache)
+        self.init(
+            mapView: YMKMapView(frame: bounds),
+            imageCache: imageCache,
+            delegate: delegate
+        )
     }
     
     
@@ -116,7 +122,16 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
      All placemarks will be rendered separately at more detailed zoom levels. The value will be clipped between 0 and 19 (most detailed zoom).
      */
     open var minClusterZoom: UInt {
-        return 12
+        return 14
+    }
+    
+    /**
+     Zoom level for move to pin
+     
+     The value between 0 and 19 (most detailed zoom) is recommended.
+     */
+    open var pinTargetCameraZoom : Float {
+        return 16
     }
     
     /**
@@ -139,9 +154,9 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
         return Pin(object)
     }
     
-    open func setMarkers(with objects: [IPinObject], withMoveToBounds moveToBounds: Bool) {
+    open func setMarkers(with objects: [IPinObject], withMoveToBounds moveToBounds: Bool = true) {
         
-        if let selectedMarker = selectedPin, !objects.contains(where: { $0.isEqual(to: selectedMarker.object) }) {
+        if let selectedMarker = selectedPin, !objects.contains(where: { $0.isEqual(selectedMarker.object) }) {
             setSelectedPin(nil)
         }
         
@@ -270,9 +285,13 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
         }
     }
     
+    open func needToMoveInUpdateVisibleArea(forceMove: Bool) -> Bool {
+        return forceMove || !didFirstGestureScroll
+    }
+    
     func updateVisibleArea(_ bounds: BoundsMapMarkers?, forceMove: Bool) {
         
-        if let map = map, let bounds = bounds, forceMove || !didFirstGestureScroll {
+        if let map = map, let bounds = bounds, needToMoveInUpdateVisibleArea(forceMove: forceMove) {
             
             let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
             move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: true)
@@ -306,6 +325,7 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
             if let placemark = oldValue?.Placemark, placemark.isValid {
                 map?.mapObjects.remove(with: placemark)
             }
+            updateCustomLocation()
         }
     }
     
@@ -402,13 +422,30 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
     
     open func move(with cluster: Cluster, fast: Bool = false) {
         
-        let bounds = cluster.placemarks.reduce(BoundsMapMarkers()) { (res, placemark) -> BoundsMapMarkers in
+        guard let map = map else { return }
+        
+        let bounds = cluster.placemarks.reduce(BoundsMapMarkers(azimuth: Double(map.cameraPosition.azimuth))) { (res, placemark) -> BoundsMapMarkers in
             res.addPoint(point: placemark.geometry)
             return res
         }
         
-        guard let cameraPosition = map?.cameraPosition(with: bounds.getBoundingBox()) else { return }
-        move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: fast)
+        let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
+        var zoom = cameraPosition.zoom
+        let minClusterZoom = Float(self.minClusterZoom)
+        
+        if zoom > minClusterZoom {
+            zoom = zoomOutForBounds(cameraPosition.zoom)
+            
+            if zoom < minClusterZoom {
+                zoom = minClusterZoom
+            }
+        }
+        
+        if zoom <= map.cameraPosition.zoom {
+            zoom = map.cameraPosition.zoom + 0.5
+        }
+        
+        move(with: cameraPosition.target, zoom: zoom, fast: fast)
     }
     
     private func move(with target: YMKPoint, zoom: Float, fast: Bool = false) {
@@ -455,7 +492,7 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
             selectedPin = pin
             
             if needNotificate {
-                delegate?.didSelect(with: selectedPin)
+                delegate?.mapDataAdapter(self, didSelectPin: selectedPin)
             }
         } else if !(selectedPin?.isValid ?? true) {
             selectedPin = pin
@@ -467,7 +504,7 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
      */
     public func select(with object: IPinObject, targetZoom: Float? = nil, fast: Bool = false) {
         
-        if let pin = pins?.first(where: { object.isEqual(to: $0.object) }) {
+        if let pin = pins?.first(where: { object.isEqual($0.object) }) {
             unselectPin(newSelectedPin: pin, needNotificate: false)
             
             pin.isSelected = true
@@ -493,7 +530,7 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
         newSelectedPin.isSelected = true
         setSelectedPin(newSelectedPin)
         
-        if delegate?.didTap(with: newSelectedPin) ?? false {
+        if delegate?.mapDataAdapter(self, didTapPin: newSelectedPin) ?? false {
             didFirstGestureScroll = true
         }
     }
@@ -521,7 +558,12 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
     
     open func styleCluster(with cluster: Cluster, imageCache: AutoPurgingImageCache?) {
         
-        cluster.setCachedImage(withIdentifier: "\(cluster.size)", imageCache: imageCache) { () -> UIImage? in
+        cluster.setCachedImage(
+            withIdentifier: "\(cluster.size)",
+            imageCache: imageCache,
+            style: IconStyle(zIndex: NSNumber(value: cluster.size))
+            )
+        { () -> UIImage? in
             return ClusterView(number: cluster.size, displayedText: "\(cluster.size)").snapshot()
         }
     }
@@ -531,7 +573,7 @@ open class AbstractMapDataAdapter: NSObject, YMKClusterListener, YMKClusterTapLi
     
     open func onClusterTap(with cluster: YMKCluster) -> Bool {
         
-        if delegate?.didTap(with: cluster) ?? false {
+        if delegate?.mapDataAdapter(self, didTapPin: cluster) ?? false {
             didFirstGestureScroll = true
         }
         

@@ -10,17 +10,15 @@ import UIKit
 import ClusteringMarkers
 import AlamofireImage
 
-class MapDataAdapter: AbstractMapDataAdapter {
+class MapDataAdapter: CMDataAdapter {
     
     override func initiatePin(object: IPinObject) -> Pin? {
         return StorePin(object)
     }
 
     override func styleCluster(with cluster: Cluster, imageCache: AutoPurgingImageCache?) {
-
         cluster.setCachedImage(withIdentifier: "\(cluster.size)", imageCache: imageCache) { () -> UIImage? in
             return StoreClusterView(number: cluster.size, displayedText: "\(cluster.size)").snapshot()
         }
     }
-    
 }

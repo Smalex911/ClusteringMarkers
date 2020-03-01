@@ -8,7 +8,7 @@ import UIKit
 open class ClusterView: UIView {
     
     open var maxLimitCount: UInt {
-        return 50
+        return 100
     }
     open var minLimitCount: UInt {
         return 3

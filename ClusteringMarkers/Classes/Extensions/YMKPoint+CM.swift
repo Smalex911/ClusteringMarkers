@@ -1,5 +1,5 @@
 //
-//  YMKPoint+ClusteringMarkers.swift
+//  YMKPoint+CM.swift
 //  ClusteringMarkers
 //
 //  Created by Александр Смородов on 23.10.2019.

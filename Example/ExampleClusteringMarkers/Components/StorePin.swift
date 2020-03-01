@@ -14,7 +14,7 @@ public class StorePin : Pin {
     override public func setIcon() {
         if Placemark != nil {
             
-            let text = "lat \(Int((object?.latitude ?? 0) * 100))"
+            let text = "lat \(Int((object?.pinLatitude ?? 0) * 100))"
             
             setCachedImage(withIdentifier: "\(text)-\(isSelected)") { () -> UIImage? in
                 

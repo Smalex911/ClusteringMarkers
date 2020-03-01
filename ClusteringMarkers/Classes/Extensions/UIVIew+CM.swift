@@ -1,5 +1,5 @@
 //
-//  UIVIew+ClusteringMarkers.swift
+//  UIVIew+CM.swift
 //  ClusteringMarkers
 //
 //  Created by Александр Смородов on 27.02.2020.

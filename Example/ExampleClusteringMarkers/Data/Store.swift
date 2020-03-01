@@ -16,19 +16,19 @@ public class Store: Hashable, IPinObject {
     }
     
     public func hash(into hasher: inout Hasher) {
-        latitude.hash(into: &hasher)
-        longitude.hash(into: &hasher)
+        pinLatitude.hash(into: &hasher)
+        pinLongitude.hash(into: &hasher)
     }
     
-    public var latitude: Double?
-    public var longitude: Double?
+    public var pinLatitude: Double?
+    public var pinLongitude: Double?
     
     init(latitude: Double, longitude: Double) {
-        self.latitude = latitude
-        self.longitude = longitude
+        self.pinLatitude = latitude
+        self.pinLongitude = longitude
     }
     
-    public func isEqual(to object: IPinObject?) -> Bool {
+    public func isEqual(_ object: Any?) -> Bool {
         return self == (object as? Store)
     }
 }

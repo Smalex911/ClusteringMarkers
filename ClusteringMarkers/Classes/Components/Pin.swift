@@ -6,14 +6,6 @@
 import UIKit
 import YandexMapKit
 
-public protocol IPinObject: class {
-    
-    var latitude: Double? { get set }
-    var longitude: Double? { get set }
-    
-    func isEqual(to object: IPinObject?) -> Bool
-}
-
 open class Pin: Marker {
     
     public var object: IPinObject?
@@ -21,7 +13,7 @@ open class Pin: Marker {
     
     public required init?(_ object: IPinObject?) {
         
-        guard object != nil else {
+        guard let object = object, object.hasLocation else {
             return nil
         }
         
@@ -31,14 +23,14 @@ open class Pin: Marker {
     override open func hash(into hasher: inout Hasher) {
         super.hash(into: &hasher)
         
-        object?.latitude.hash(into: &hasher)
-        object?.longitude.hash(into: &hasher)
+        object?.pinLatitude.hash(into: &hasher)
+        object?.pinLongitude.hash(into: &hasher)
     }
     
     override open var Coordinate: YMKPoint {
         return YMKPoint(
-            latitude: object?.latitude ?? 0,
-            longitude: object?.longitude ?? 0)
+            latitude: object?.pinLatitude ?? 0,
+            longitude: object?.pinLongitude ?? 0)
     }
     
     override open func setIcon() {
