@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/Smalex911/ClusteringMarkers.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
 
   s.source_files = 'ClusteringMarkers/Classes/**/*'
   
@@ -42,5 +42,5 @@ Pod::Spec.new do |s|
   s.static_framework = true
   
   s.dependency 'YandexMapKit'
-  s.dependency 'AlamofireImage', '< 4'
+  s.dependency 'AlamofireImage', '>= 4'
 end
