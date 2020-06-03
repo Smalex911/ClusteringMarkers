@@ -17,7 +17,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     var imageCache: AutoPurgingImageCache?
     
     public init(
-        mapView: YMKMapView,
+        mapView: YMKMapView = YMKMapView(),
         imageCache: AutoPurgingImageCache? = AutoPurgingImageCache(),
         delegate: CMDelegate
     ) {
@@ -332,32 +332,35 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     var lastSettingCustomLocationWork: DispatchWorkItem?
     
     open func setCustomLocation(marker: Marker?, withScroll: Bool) {
-        
         markerCustomLocation = marker
         
         if !(lastSettingCustomLocationWork?.isCancelled ?? true) {
             lastSettingCustomLocationWork?.cancel()
         }
         
+        if withScroll {
+            updateVisibleArea(forceMove: true)
+        }
+    }
+    
+    func updateVisibleArea(forceMove: Bool) {
         let userLocation = self.userLocation
+        let customLocation = self.markerCustomLocation
         
         var work: DispatchWorkItem!
         work = DispatchWorkItem { [weak self] in
             guard let _self = self else { return }
             
             let pins = _self.pins
-            let bounds = withScroll ? BoundsMapMarkers() : nil
+            let bounds = BoundsMapMarkers()
             
-            if withScroll {
-                _self.createVisibleArea(bounds, userLocation: userLocation, customMarker: marker, cycleHandler: { (pinHandler) in
-                    
-                    pins?.forEach { pinHandler($0) }
-                })
-            }
+            _self.createVisibleArea(bounds, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
+                pins?.forEach { pinHandler($0) }
+            })
             
             if !work.isCancelled {
                 DispatchQueue.main.sync { [weak self] in
-                    self?.updateVisibleArea(bounds, forceMove: true)
+                    self?.updateVisibleArea(bounds, forceMove: forceMove)
                 }
             }
         }
@@ -626,6 +629,10 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         
         if type(of: event) == YMKUserLocationIconChanged.self {
             updateCustomLocation()
+            
+            if needToMoveInUpdateVisibleArea(forceMove: false) {
+                updateVisibleArea(forceMove: false)
+            }
         }
     }
 }

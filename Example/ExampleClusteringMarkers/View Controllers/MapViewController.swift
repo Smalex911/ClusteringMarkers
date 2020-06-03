@@ -12,7 +12,7 @@ import ClusteringMarkers
 
 class MapViewController: UIViewController {
 
-    @IBOutlet var mapView: YMKMapView!
+    @IBOutlet var viewContainer: UIView!
     
     var mapDataAdapter: MapDataAdapter?
     
@@ -30,7 +30,19 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mapDataAdapter = MapDataAdapter(mapView: mapView, delegate: self)
+        mapDataAdapter = MapDataAdapter(delegate: self)
+        if let v = mapDataAdapter?.mapView {
+            viewContainer.addSubview(v)
+            
+            v.translatesAutoresizingMaskIntoConstraints = false
+            
+            viewContainer.addConstraints([
+                NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: viewContainer, attribute: .top, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .left, relatedBy: .equal, toItem: viewContainer, attribute: .left, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: viewContainer, attribute: .bottom, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .right, relatedBy: .equal, toItem: viewContainer, attribute: .right, multiplier: 1, constant: 0)
+            ])
+        }
         
         let stores = createStores()
         mapDataAdapter?.setMarkers(with: stores, withMoveToBounds: true)
