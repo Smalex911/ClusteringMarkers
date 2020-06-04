@@ -457,7 +457,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         map.move(
             with: YMKCameraPosition(
                 target: target,
-                zoom: zoom,
+                zoom: zoom.isNaN ? 0 : zoom,
                 azimuth: map.cameraPosition.azimuth,
                 tilt: map.cameraPosition.tilt),
             animationType: YMKAnimation(
