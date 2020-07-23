@@ -365,7 +365,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             }
         }
         lastSettingCustomLocationWork = work
-        delegate?.willBeginUpdateMarkers()
         DispatchQueue.global(qos: .userInteractive).async(execute: work)
     }
     
