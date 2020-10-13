@@ -5,8 +5,11 @@
 
 public protocol CMDelegate: class {
     
-    func willBeginUpdateMarkers()
-    func didEndUpdateMarkers(_ afterSetMarkers: Bool)
+    func willBeginUpdatingMarkers()
+    func didEndUpdatingMarkers(_ afterSetMarkers: Bool)
+    
+    func willBeginScrollingMap(_ gesture: Bool)
+    func didEndScrollingMap(_ gesture: Bool)
     
     /**
      - returns: `true` if there was a transition to a pin, `false` otherwise.
@@ -29,8 +32,11 @@ public protocol CMDelegate: class {
 
 public extension CMDelegate {
     
-    func willBeginUpdateMarkers() { }
-    func didEndUpdateMarkers(_ afterSetMarkers: Bool) { }
+    func willBeginUpdatingMarkers() { }
+    func didEndUpdatingMarkers(_ afterSetMarkers: Bool) { }
+    
+    func willBeginScrollingMap(_ gesture: Bool) { }
+    func didEndScrollingMap(_ gesture: Bool) { }
     
     func mapDataAdapter(_ mapDataAdapter: CMDataAdapter, didTapPin pin: Pin) -> Bool {
         mapDataAdapter.move(with: pin, targetZoom: mapDataAdapter.pinTargetCameraZoom)

@@ -206,7 +206,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
                 }
             }
             lastSettingMarkersWork = work
-            delegate?.willBeginUpdateMarkers()
+            delegate?.willBeginUpdatingMarkers()
             DispatchQueue.global(qos: .userInteractive).async(execute: work)
         } else {
             cleanMarkers()
@@ -235,7 +235,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         
         updateCustomLocation()
         
-        delegate?.didEndUpdateMarkers(isNew)
+        delegate?.didEndUpdatingMarkers(isNew)
     }
     
     func cleanMarkers() {
@@ -606,10 +606,26 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     //MARK: - YMKMapCameraListener
     
+    private var scrollActive: Bool = false
+    
     open func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateSource: YMKCameraUpdateSource, finished: Bool) {
         
-        if cameraUpdateSource == YMKCameraUpdateSource.gestures {
+        let isGesture = cameraUpdateSource == YMKCameraUpdateSource.gestures
+        
+        if isGesture {
             didFirstGestureScroll = true
+        }
+        
+        if !scrollActive {
+            scrollActive = true
+            
+            delegate?.willBeginScrollingMap(isGesture)
+        }
+        
+        if finished {
+            scrollActive = false
+            
+            delegate?.didEndScrollingMap(isGesture)
         }
     }
     
