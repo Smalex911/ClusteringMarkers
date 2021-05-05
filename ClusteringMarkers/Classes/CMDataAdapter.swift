@@ -385,19 +385,19 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     //MARK: - Move Camera Position
     
-    public func moveToCurrentLocation(deniedCompletion: (()->Void)? = nil) {
+    public func moveToCurrentLocation(deniedCompletion: (()->Void)? = nil, isGestureScroll: Bool = true) {
         
         guard let userLocation = userLocation else {
             deniedCompletion?()
             return
         }
-        move(with: userLocation, zoom: userLocationCameraZoom, fast: false)
+        move(with: userLocation, zoom: userLocationCameraZoom, fast: false, isGestureScroll: true)
     }
     
-    public func move(zoomDiff: Float, fast: Bool = false) {
+    public func move(zoomDiff: Float, fast: Bool = false, isGestureScroll: Bool = true) {
         
         guard let map = map else { return }
-        move(with: map.cameraPosition.target, zoom: map.cameraPosition.zoom + zoomDiff, fast: fast)
+        move(with: map.cameraPosition.target, zoom: map.cameraPosition.zoom + zoomDiff, fast: fast, isGestureScroll: true)
     }
     
     public func setCityLocation(latitude: Double, longitude: Double) {
@@ -406,23 +406,23 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: 8, fast: true)
     }
     
-    public func move(latitude: Double, longitude: Double, zoom: Float, fast: Bool = false) {
+    public func move(latitude: Double, longitude: Double, zoom: Float, fast: Bool = false, isGestureScroll: Bool = true) {
         
         guard let _ = map else { return }
-        move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: zoom, fast: fast)
+        move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: zoom, fast: fast, isGestureScroll: isGestureScroll)
     }
     
     /**
      - parameter targetZoom: Zoom level for move to pin. Return `nil` to disable zoom. `nil` by default.
      */
-    open func move(with pin: Pin, targetZoom: Float? = nil, fast: Bool = false) {
+    open func move(with pin: Pin, targetZoom: Float? = nil, fast: Bool = false, isGestureScroll: Bool = true) {
         
         guard let cameraZoom = map?.cameraPosition.zoom else { return }
         let zoom = targetZoom != nil && cameraZoom < targetZoom! ? targetZoom! : cameraZoom
-        move(with: pin.Coordinate, zoom: zoom, fast: fast)
+        move(with: pin.Coordinate, zoom: zoom, fast: fast, isGestureScroll: isGestureScroll)
     }
     
-    open func move(with cluster: Cluster, fast: Bool = false) {
+    open func move(with cluster: Cluster, fast: Bool = false, isGestureScroll: Bool = true) {
         
         guard let map = map else { return }
         
@@ -447,10 +447,10 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             zoom = map.cameraPosition.zoom + 0.5
         }
         
-        move(with: cameraPosition.target, zoom: zoom, fast: fast)
+        move(with: cameraPosition.target, zoom: zoom, fast: fast, isGestureScroll: isGestureScroll)
     }
     
-    private func move(with target: YMKPoint, zoom: Float, fast: Bool = false) {
+    private func move(with target: YMKPoint, zoom: Float, fast: Bool = false, isGestureScroll: Bool = true) {
         
         guard let map = map else { return }
         map.move(
@@ -462,6 +462,10 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             animationType: YMKAnimation(
                 type: fast ? .linear : .smooth,
                 duration: fast ? 0 : 0.2))
+        
+        if isGestureScroll {
+            didFirstGestureScroll = true
+        }
     }
     
     public func resetCamera() {
@@ -513,7 +517,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             selectedPin = pin
             
             if let targetZoom = targetZoom {
-                move(with: pin, targetZoom: targetZoom, fast: fast)
+                move(with: pin, targetZoom: targetZoom, fast: fast, isGestureScroll: true)
             }
         }
     }
