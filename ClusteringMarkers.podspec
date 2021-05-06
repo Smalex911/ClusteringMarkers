@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ClusteringMarkers'
-  s.version          = '1.0.2'
+  s.version          = '1.1'
   s.summary          = 'Clustering markers using YandexMapKit.'
   s.swift_version    = '5.0'
 
@@ -43,4 +43,9 @@ Pod::Spec.new do |s|
   
   s.dependency 'YandexMapKit'
   s.dependency 'AlamofireImage', '>= 4'
+  
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+  }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
