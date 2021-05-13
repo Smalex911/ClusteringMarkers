@@ -23,10 +23,9 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     ) {
         self.imageCache = imageCache
         self.delegate = delegate
+        self.mapView = mapView
         
         super.init()
-        
-        self.mapView = mapView
         
         initiateMapSettings()
         initiateClustersCollection()
@@ -48,7 +47,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     //MARK: - Map
     
-    public var mapView: YMKMapView? {
+    public var mapView: YMKMapView {
         didSet {
             initiateMapSettings()
             initiateClustersCollection()
@@ -57,11 +56,10 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     var map: YMKMap? {
-        return mapView?.mapWindow.map
+        mapView.mapWindow.map
     }
     
     open func initiateMapSettings() {
-        
         map?.addInputListener(with: self)
         map?.addCameraListener(with: self)
         map?.logo.setAlignmentWith(YMKLogoAlignment(horizontalAlignment: .left, verticalAlignment: .bottom))
@@ -94,8 +92,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     var userLocationLayer: YMKUserLocationLayer?
     
     open func initiateUserLocationSettings() {
-        
-        guard let mapWindow = mapView?.mapWindow else { return }
+        guard let mapWindow = mapView.mapWindow else { return }
         
         userLocationLayer = YMKMapKit.sharedInstance().createUserLocationLayer(with: mapWindow)
         
@@ -248,7 +245,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     //MARK: - Visible Area
     
-    open func createVisibleArea(_ bounds: BoundsMapMarkers?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin)->Void)->Void)) {
+    open func createVisibleArea(_ bounds: BoundsMapMarkers?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin) -> Void) -> Void)) {
         
         var minDistancePin: Pin?
         var minDistance: Double?
@@ -423,7 +420,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     open func move(with cluster: Cluster, fast: Bool = false, isGestureScroll: Bool = true) {
-        
         guard let map = map else { return }
         
         let bounds = cluster.placemarks.reduce(BoundsMapMarkers(azimuth: Double(map.cameraPosition.azimuth))) { (res, placemark) -> BoundsMapMarkers in
@@ -451,8 +447,8 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     private func move(with target: YMKPoint, zoom: Float, fast: Bool = false, isGestureScroll: Bool = true) {
-        
         guard let map = map else { return }
+        
         map.move(
             with: YMKCameraPosition(
                 target: target,
@@ -469,7 +465,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     public func resetCamera() {
-        
         map?.move(
             with: YMKCameraPosition(
                 target: YMKPoint(latitude: 0, longitude: 0),
@@ -508,30 +503,30 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     /**
      - parameter targetZoom: Zoom level for move to pin. Return `nil` to disable transition. `nil` by default.
      */
-    public func select(with object: IPinObject, targetZoom: Float? = nil, fast: Bool = false) {
+    public func select(object: IPinObject?, targetZoom: Float? = nil, fast: Bool = false) {
+        guard let object = object else {
+            unselectPin()
+            return
+        }
         
-        if let pin = pins?.first(where: { object.isEqual($0.object) }) {
-            unselectPin(newSelectedPin: pin, needNotificate: false)
-            
-            pin.isSelected = true
-            selectedPin = pin
-            
-            if let targetZoom = targetZoom {
-                move(with: pin, targetZoom: targetZoom, fast: fast, isGestureScroll: true)
-            }
+        guard let pin = pins?.first(where: { object.isEqual($0.object) }) else { return }
+        unselectPin(newSelectedPin: pin, needNotificate: false)
+        
+        pin.isSelected = true
+        selectedPin = pin
+        
+        if let targetZoom = targetZoom {
+            move(with: pin, targetZoom: targetZoom, fast: fast, isGestureScroll: true)
         }
     }
     
-    public func select(with placemark: YMKPlacemarkMapObject?) {
-        
+    public func select(placemark: YMKPlacemarkMapObject?) {
         guard let placemark = placemark else {
             unselectPin()
             return
         }
         
-        guard let newSelectedPin = pins?.first(where: { $0.isEqual(placemark: placemark) }) else {
-            return
-        }
+        guard let newSelectedPin = pins?.first(where: { $0.isEqual(placemark: placemark) }) else { return }
         
         newSelectedPin.isSelected = true
         setSelectedPin(newSelectedPin)
@@ -542,10 +537,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     private func unselectPin(newSelectedPin: Pin? = nil, needNotificate: Bool = true) {
-        
-        guard let selectedPin = pins?.first(where: { $0.isSelected }) else {
-            return
-        }
+        guard let selectedPin = pins?.first(where: { $0.isSelected }) else { return }
         
         if newSelectedPin == nil || newSelectedPin != selectedPin {
             setSelectedPin(nil, needNotificate: needNotificate)
@@ -553,6 +545,29 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         }
     }
     
+    @available(*, deprecated, renamed: "select(object:targetZoom:fast:)")
+    public func select(with object: IPinObject, targetZoom: Float? = nil, fast: Bool = false) {
+        select(object: object, targetZoom: targetZoom, fast: fast)
+    }
+    
+    @available(*, deprecated, renamed: "select(placemark:)")
+    public func select(with placemark: YMKPlacemarkMapObject?) {
+        select(placemark: placemark)
+    }
+    
+    //MARK: - Update Map Object
+    
+    public func update(object: IPinObject?) {
+        guard let object = object else { return }
+        guard let pin = pins?.first(where: { object.isEqual($0.object) }) else { return }
+        pin.setIcon()
+    }
+    
+    public func update(placemark: YMKPlacemarkMapObject?) {
+        guard let placemark = placemark else { return }
+        guard let pin = pins?.first(where: { $0.isEqual(placemark: placemark) }) else { return }
+        pin.setIcon()
+    }
     
     //MARK: - YMKClusterListener
     
@@ -594,7 +609,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         delegate?.onMapTap()
         
         guard let placemark = mapObject as? YMKPlacemarkMapObject else { return true }
-        select(with: placemark)
+        select(placemark: placemark)
         return true
     }
     
