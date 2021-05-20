@@ -251,7 +251,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         var minDistance: Double?
         
         cycleHandler { pin in
-            
             if bounds != nil {
                 if customMarker != nil {
                     let dist = pin.Coordinate.distance(to: customMarker!.Coordinate)
@@ -267,7 +266,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         }
         
         if bounds != nil {
-            
             if let pin = minDistancePin {
                 bounds?.addPoint(point: pin.Coordinate)
             }
@@ -291,7 +289,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         if let map = map, let bounds = bounds, needToMoveInUpdateVisibleArea(forceMove: forceMove) {
             
             let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
-            move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: true)
+            move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: true, isGestureScroll: false)
         }
     }
     
