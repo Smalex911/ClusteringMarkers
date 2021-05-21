@@ -10,8 +10,8 @@ open class Pin: Marker {
     
     public var object: IPinObject?
     
-    
-    public required init?(_ object: IPinObject?) {
+    public override init() { }
+    public init?(_ object: IPinObject?) {
         
         guard let object = object, object.hasLocation else {
             return nil

@@ -319,6 +319,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         didSet {
             if let placemark = oldValue?.Placemark, placemark.isValid {
                 map?.mapObjects.remove(with: placemark)
+                oldValue?.Placemark = nil
             }
             updateCustomLocation()
         }
