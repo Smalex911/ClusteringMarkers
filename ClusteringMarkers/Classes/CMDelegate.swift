@@ -3,7 +3,7 @@
 //  Created by Aleksandr Smorodov on 31.5.19.
 //
 
-public protocol CMDelegate: class {
+public protocol CMDelegate: AnyObject {
     
     func willBeginUpdatingMarkers()
     func didEndUpdatingMarkers(_ afterSetMarkers: Bool)
@@ -12,6 +12,7 @@ public protocol CMDelegate: class {
     func didEndScrollingMap(_ gesture: Bool)
     
     func onMapTap()
+    func onMapLongTap()
     
     /**
      - returns: `true` if there was a transition to a pin, `false` otherwise.
@@ -41,6 +42,7 @@ public extension CMDelegate {
     func didEndScrollingMap(_ gesture: Bool) { }
     
     func onMapTap() { }
+    func onMapLongTap() { }
     
     func mapDataAdapter(_ mapDataAdapter: CMDataAdapter, didTapPin pin: Pin) -> Bool {
         mapDataAdapter.move(with: pin, targetZoom: mapDataAdapter.pinTargetCameraZoom)

@@ -621,7 +621,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     open func onMapLongTap(with map: YMKMap, point: YMKPoint) {
-        delegate?.onMapTap()
+        delegate?.onMapLongTap()
     }
     
     

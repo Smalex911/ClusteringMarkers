@@ -88,4 +88,20 @@ extension MapViewController: CMDelegate {
             print("pin deselected")
         }
     }
+    
+    func onMapTap() {
+        print("onMapTap")
+    }
+    
+    func onMapLongTap() {
+        print("onMapLongTap")
+    }
+    
+    func willBeginScrollingMap(_ gesture: Bool) {
+        print("willBeginScrollingMap")
+    }
+    
+    func didEndScrollingMap(_ gesture: Bool) {
+        print("didEndScrollingMap")
+    }
 }
