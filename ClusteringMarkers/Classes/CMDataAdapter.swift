@@ -592,7 +592,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     //MARK: - YMKClusterTapListener
     
     open func onClusterTap(with cluster: YMKCluster) -> Bool {
-        delegate?.onMapTap()
+        delegate?.onMapTap(lat: cluster.appearance.geometry.latitude, lng: cluster.appearance.geometry.longitude)
         
         if delegate?.mapDataAdapter(self, didTapPin: cluster) ?? false {
             didFirstGestureScroll = true
@@ -605,7 +605,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     //MARK: - YMKMapObjectTapListener
     
     open func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
-        delegate?.onMapTap()
+        delegate?.onMapTap(lat: point.latitude, lng: point.longitude)
         
         guard let placemark = mapObject as? YMKPlacemarkMapObject else { return true }
         select(placemark: placemark)
@@ -616,12 +616,12 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     //MARK: - YMKMapInputListener
     
     open func onMapTap(with map: YMKMap, point: YMKPoint) {
-        delegate?.onMapTap()
+        delegate?.onMapTap(lat: point.latitude, lng: point.longitude)
         unselectPin()
     }
     
     open func onMapLongTap(with map: YMKMap, point: YMKPoint) {
-        delegate?.onMapLongTap()
+        delegate?.onMapLongTap(lat: point.latitude, lng: point.longitude)
     }
     
     

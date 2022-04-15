@@ -11,8 +11,8 @@ public protocol CMDelegate: AnyObject {
     func willBeginScrollingMap(_ gesture: Bool)
     func didEndScrollingMap(_ gesture: Bool)
     
-    func onMapTap()
-    func onMapLongTap()
+    func onMapTap(lat: Double, lng: Double)
+    func onMapLongTap(lat: Double, lng: Double)
     
     /**
      - returns: `true` if there was a transition to a pin, `false` otherwise.
@@ -41,8 +41,8 @@ public extension CMDelegate {
     func willBeginScrollingMap(_ gesture: Bool) { }
     func didEndScrollingMap(_ gesture: Bool) { }
     
-    func onMapTap() { }
-    func onMapLongTap() { }
+    func onMapTap(lat: Double, lng: Double) { }
+    func onMapLongTap(lat: Double, lng: Double) { }
     
     func mapDataAdapter(_ mapDataAdapter: CMDataAdapter, didTapPin pin: Pin) -> Bool {
         mapDataAdapter.move(with: pin, targetZoom: mapDataAdapter.pinTargetCameraZoom)
