@@ -4,7 +4,7 @@
 //
 
 import UIKit
-import YandexMapKit
+import YandexMapsMobile
 
 public class BoundsMapMarkers {
     

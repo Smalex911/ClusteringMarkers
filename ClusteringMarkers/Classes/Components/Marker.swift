@@ -4,7 +4,7 @@
 //
 
 import UIKit
-import YandexMapKit
+import YandexMapsMobile
 import AlamofireImage
 
 open class Marker: Hashable {

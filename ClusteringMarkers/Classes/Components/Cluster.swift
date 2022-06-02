@@ -3,7 +3,7 @@
 //  Created by Aleksandr Smorodov on 22.5.18.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 import AlamofireImage
 
 public typealias Cluster = YMKCluster

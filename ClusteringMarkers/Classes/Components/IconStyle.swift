@@ -5,7 +5,7 @@
 //  Created by Александр Смородов on 28.02.2020.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 
 public typealias IconStyle = YMKIconStyle
 

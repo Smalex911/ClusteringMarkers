@@ -6,7 +6,7 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 import ClusteringMarkers
 
 public class StorePin : Pin {

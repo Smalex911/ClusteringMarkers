@@ -5,7 +5,7 @@
 //  Created by Александр Смородов on 23.10.2019.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 import CoreLocation
 
 extension YMKPoint {

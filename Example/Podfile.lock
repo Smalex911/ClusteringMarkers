@@ -4,10 +4,8 @@ PODS:
     - Alamofire (~> 5.1)
   - ClusteringMarkers (1.2):
     - AlamofireImage (>= 4)
-    - YandexMapKit
-  - YandexMapKit (3.5.0):
-    - YandexRuntime (= 3.5.0)
-  - YandexRuntime (3.5.0)
+    - YandexMapsMobile
+  - YandexMapsMobile (4.1.0-lite)
 
 DEPENDENCIES:
   - ClusteringMarkers (from `../`)
@@ -16,7 +14,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
-    - YandexMapKit
+    - YandexMapsMobile
     - YandexRuntime
 
 EXTERNAL SOURCES:
@@ -27,7 +25,7 @@ SPEC CHECKSUMS:
   Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
   ClusteringMarkers: 07826dc5198c7f962f3894f994759e08713c47e7
-  YandexMapKit: ecd4b78de34a35df63d066ac299e6fd0fe46d1ba
+  YandexMapsMobile: 549f83d16cb7d1ea73031163722852f408b85841
   YandexRuntime: 2d55244d06267106cf9b00c25a1e63f72a73b6fd
 
 PODFILE CHECKSUM: 1249784cb670a963ac4dc4c9168c9c50ef06e192

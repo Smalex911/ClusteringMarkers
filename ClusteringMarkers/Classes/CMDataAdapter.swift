@@ -3,7 +3,7 @@
 //  Created by Aleksandr Smorodov on 31.5.19.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 import AlamofireImage
 
 open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, YMKMapObjectTapListener, YMKMapInputListener, YMKMapCameraListener, YMKUserLocationObjectListener {

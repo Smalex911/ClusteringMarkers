@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import YandexMapKit
+import YandexMapsMobile
 import AlamofireImage
 
 @UIApplicationMain
