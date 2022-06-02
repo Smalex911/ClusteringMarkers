@@ -629,9 +629,9 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     private var scrollActive: Bool = false
     
-    open func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateSource: YMKCameraUpdateSource, finished: Bool) {
+    open func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
         
-        let isGesture = cameraUpdateSource == YMKCameraUpdateSource.gestures
+        let isGesture = cameraUpdateReason == YMKCameraUpdateReason.gestures
         
         if isGesture {
             didFirstGestureScroll = true
