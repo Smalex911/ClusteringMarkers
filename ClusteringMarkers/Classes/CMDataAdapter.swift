@@ -38,10 +38,15 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         delegate: CMDelegate
     ) {
         self.init(
-            mapView: YMKMapView(frame: bounds),
+            mapView: YMKMapView(frame: bounds, vulkanPreferred: CMDataAdapter.isM1Simulator()),
             imageCache: imageCache,
             delegate: delegate
         )
+    }
+    
+    private static func isM1Simulator() -> Bool
+    {
+        return (TARGET_IPHONE_SIMULATOR & TARGET_CPU_ARM64) != 0
     }
     
     
@@ -60,6 +65,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     open func initiateMapSettings() {
+        map?.mapType = .map
         map?.addInputListener(with: self)
         map?.addCameraListener(with: self)
         map?.logo.setAlignmentWith(YMKLogoAlignment(horizontalAlignment: .left, verticalAlignment: .bottom))
