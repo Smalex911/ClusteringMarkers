@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ClusteringMarkers'
-  s.version          = '1.3'
-  s.summary          = 'Clustering markers using YandexMapKit.'
+  s.version          = '2.0'
+  s.summary          = 'Clustering markers using YandexMapsMobile.'
   s.swift_version    = '5.0'
 
 # This description is used to generate tags and improve search results.
@@ -41,7 +41,7 @@ Pod::Spec.new do |s|
   s.frameworks = 'UIKit'
   s.static_framework = true
   
-  s.dependency 'YandexMapKit'
+  s.dependency 'YandexMapsMobile'
   s.dependency 'AlamofireImage', '>= 4'
   
   s.pod_target_xcconfig = {

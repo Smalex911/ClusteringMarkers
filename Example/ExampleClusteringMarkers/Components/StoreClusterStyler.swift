@@ -6,7 +6,7 @@
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 
 struct StoreClusterStyler {
     

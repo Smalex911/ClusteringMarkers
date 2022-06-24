@@ -3,7 +3,7 @@
 //  Created by Aleksandr Smorodov on 31.5.19.
 //
 
-import YandexMapKit
+import YandexMapsMobile
 import AlamofireImage
 
 open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, YMKMapObjectTapListener, YMKMapInputListener, YMKMapCameraListener, YMKUserLocationObjectListener {
@@ -38,10 +38,15 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         delegate: CMDelegate
     ) {
         self.init(
-            mapView: YMKMapView(frame: bounds),
+            mapView: YMKMapView(frame: bounds, vulkanPreferred: CMDataAdapter.isM1Simulator()),
             imageCache: imageCache,
             delegate: delegate
         )
+    }
+    
+    private static func isM1Simulator() -> Bool
+    {
+        return (TARGET_IPHONE_SIMULATOR & TARGET_CPU_ARM64) != 0
     }
     
     
@@ -60,6 +65,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     open func initiateMapSettings() {
+        map?.mapType = .map
         map?.addInputListener(with: self)
         map?.addCameraListener(with: self)
         map?.logo.setAlignmentWith(YMKLogoAlignment(horizontalAlignment: .left, verticalAlignment: .bottom))
@@ -629,9 +635,9 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     private var scrollActive: Bool = false
     
-    open func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateSource: YMKCameraUpdateSource, finished: Bool) {
+    open func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
         
-        let isGesture = cameraUpdateSource == YMKCameraUpdateSource.gestures
+        let isGesture = cameraUpdateReason == YMKCameraUpdateReason.gestures
         
         if isGesture {
             didFirstGestureScroll = true
