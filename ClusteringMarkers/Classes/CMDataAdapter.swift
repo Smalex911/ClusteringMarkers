@@ -381,13 +381,20 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     
     //MARK: - Move Camera Position
     
-    public func moveToCurrentLocation(deniedCompletion: (()->Void)? = nil, isGestureScroll: Bool = true) {
+    open func moveToCurrentLocation(deniedCompletion: (() -> Void)? = nil, isGestureScroll: Bool = true) {
         
         guard let userLocation = userLocation else {
             deniedCompletion?()
             return
         }
-        move(with: userLocation, zoom: userLocationCameraZoom, fast: false, isGestureScroll: true)
+        
+        if let cameraZoom = map?.cameraPosition.zoom {
+            let targetZoom = userLocationCameraZoom
+            let zoom = cameraZoom < targetZoom ? targetZoom : cameraZoom
+            move(with: userLocation, zoom: zoom, fast: false, isGestureScroll: true)
+        } else {
+            move(with: userLocation, zoom: userLocationCameraZoom, fast: false, isGestureScroll: true)
+        }
     }
     
     public func move(zoomDiff: Float, fast: Bool = false, isGestureScroll: Bool = true) {
