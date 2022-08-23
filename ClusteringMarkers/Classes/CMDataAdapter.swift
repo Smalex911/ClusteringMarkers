@@ -222,6 +222,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
                     selectedPin = pin
                 }
                 pin.Placemark = placemark
+                placemark.userData = pin
                 placemark.addTapListener(with: self)
             }
             
