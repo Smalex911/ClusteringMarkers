@@ -210,6 +210,12 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         }
     }
     
+    open func updatePinIcons() {
+        pins?.forEach { pin in
+            pin.setIcon()
+        }
+    }
+    
     func updateMarkers(isNew: Bool) {
         
         if let collection = map?.mapObjects.addClusterizedPlacemarkCollection(with: self) {
