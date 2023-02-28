@@ -152,7 +152,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     open func setMarkers(with objects: [IPinObject], withMoveToBounds moveToBounds: Bool = true) {
-        
         if let selectedMarker = selectedPin, !objects.contains(where: { $0.isEqual(selectedMarker.object) }) {
             setSelectedPin(nil)
         }
@@ -163,19 +162,19 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
                 lastSettingMarkersWork?.cancel()
             }
             
+            let focusRegion = self.mapView.mapWindow.focusRegion
             let userLocation = self.userLocation
             var objects: [IPinObject]? = objects
             
             var work: DispatchWorkItem!
             work = DispatchWorkItem { [weak self] in
                 guard let _self = self else { return }
-                
                 let customLocation = _self.markerCustomLocation
                 
                 var pins: [Pin] = []
-                let bounds = moveToBounds ? BoundsMapMarkers() : nil
+                var bounds = moveToBounds ? BoundsMapMarkers() : nil
                 
-                self?.createVisibleArea(bounds, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
+                self?.createVisibleArea(&bounds, focusRegion: focusRegion, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
                     
                     objects?.forEach { object in
                         if let pin = _self.initiatePin(object: object) {
@@ -198,7 +197,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
                         _self.pins = pins
                         
                         _self.updateVisibleArea(bounds, forceMove: isNew)
-                        _self.updateMarkers(isNew: true)
+                        _self.updateMarkers()
                     }
                 }
             }
@@ -216,8 +215,11 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         }
     }
     
-    func updateMarkers(isNew: Bool) {
-        
+    open func didEndUpdatingMarkers() {
+        delegate?.didEndUpdatingMarkers(true)
+    }
+    
+    func updateMarkers() {
         if let collection = map?.mapObjects.addClusterizedPlacemarkCollection(with: self) {
             
             pins?.forEach { pin in
@@ -238,22 +240,19 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         }
         
         updateCustomLocation()
-        
-        delegate?.didEndUpdatingMarkers(isNew)
+        didEndUpdatingMarkers()
     }
     
     func cleanMarkers() {
-        
         didFirstGestureScroll = false
         pins = nil
-        updateMarkers(isNew: true)
+        updateMarkers()
     }
     
     
     //MARK: - Visible Area
     
-    open func createVisibleArea(_ bounds: BoundsMapMarkers?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin) -> Void) -> Void)) {
-        
+    open func createVisibleArea(_ bounds: inout BoundsMapMarkers?, focusRegion: YMKVisibleRegion?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin) -> Void) -> Void)) {
         var minDistancePin: Pin?
         var minDistance: Double?
         
@@ -292,9 +291,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     func updateVisibleArea(_ bounds: BoundsMapMarkers?, forceMove: Bool) {
-        
         if let map = map, let bounds = bounds, needToMoveInUpdateVisibleArea(forceMove: forceMove) {
-            
             let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
             move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: true, isGestureScroll: false)
         }
@@ -347,6 +344,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     func updateVisibleArea(forceMove: Bool) {
+        let focusRegion = self.mapView.mapWindow.focusRegion
         let userLocation = self.userLocation
         let customLocation = self.markerCustomLocation
         
@@ -355,9 +353,9 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             guard let _self = self else { return }
             
             let pins = _self.pins
-            let bounds = BoundsMapMarkers()
+            var bounds: BoundsMapMarkers? = .init()
             
-            _self.createVisibleArea(bounds, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
+            _self.createVisibleArea(&bounds, focusRegion: focusRegion, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
                 pins?.forEach { pinHandler($0) }
             })
             
