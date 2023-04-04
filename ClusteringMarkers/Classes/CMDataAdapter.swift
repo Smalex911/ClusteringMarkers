@@ -311,9 +311,15 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
               let scrollPlan = scrollPlan,
               needToMoveInUpdateVisibleArea(forceMove: forceMove)
         else { return }
-        
         let cameraPosition = map.cameraPosition(with: scrollPlan.visibleBounds.getBoundingBox())
-        move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), animation: scrollPlan.animation, isGestureScroll: false)
+        let zoom = scrollPlan.canChangeZoom ? zoomOutForBounds(cameraPosition.zoom) : map.cameraPosition.zoom
+        
+        move(
+            with: cameraPosition.target,
+            zoom: zoom,
+            animation: scrollPlan.animation,
+            isGestureScroll: false
+        )
     }
     
     open func zoomOutForBounds(_ zoom: Float) -> Float {
