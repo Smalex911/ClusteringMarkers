@@ -2,7 +2,7 @@ PODS:
   - Alamofire (5.2.1)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
-  - ClusteringMarkers (1.4):
+  - ClusteringMarkers (1.5):
     - AlamofireImage (>= 4)
     - YandexMapKit
   - YandexMapKit (3.5.0):
@@ -26,7 +26,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
-  ClusteringMarkers: 24592addaf6f82f0c939e2b318bac27b4e2a4c98
+  ClusteringMarkers: ee904a7faca125b3d966fb8c0b5394d1ac514383
   YandexMapKit: ecd4b78de34a35df63d066ac299e6fd0fe46d1ba
   YandexRuntime: 2d55244d06267106cf9b00c25a1e63f72a73b6fd
 
