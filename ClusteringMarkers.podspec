@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ClusteringMarkers'
-  s.version          = '1.5'
+  s.version          = '1.5.1'
   s.summary          = 'Clustering markers using YandexMapKit.'
   s.swift_version    = '5.0'
 
