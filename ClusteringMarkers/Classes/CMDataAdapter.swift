@@ -164,40 +164,46 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             
             let focusRegion = self.mapView.mapWindow.focusRegion
             let userLocation = self.userLocation
-            var objects: [IPinObject]? = objects
+            let objects: [IPinObject]? = objects
             
             var work: DispatchWorkItem!
             work = DispatchWorkItem { [weak self] in
-                guard let _self = self else { return }
-                let customLocation = _self.markerCustomLocation
+                guard let `self` = self else { return }
+                let customLocation = self.markerCustomLocation
                 
                 var pins: [Pin] = []
-                var bounds = moveToBounds ? BoundsMapMarkers() : nil
+                var scrollPlan: ScrollPlan?
                 
-                self?.createVisibleArea(&bounds, focusRegion: focusRegion, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
-                    
+                let initiatePinsBlock = { (setupPinHandler: (_ pin: Pin) -> Void) in
                     objects?.forEach { object in
-                        if let pin = _self.initiatePin(object: object) {
-                            pin.imageCache = self?.imageCache
+                        if let pin = self.initiatePin(object: object) {
+                            pin.imageCache = self.imageCache
                             
                             pins.append(pin)
-                            pinHandler(pin)
+                            setupPinHandler(pin)
                         }
-                    }
-                })
+                    } ?? ()
+                }
                 
-                objects = nil
+                if moveToBounds {
+                    scrollPlan = self.getScrollPlan(
+                        focusRegion: focusRegion,
+                        userLocation: userLocation,
+                        customMarker: customLocation,
+                        cycleHandler: initiatePinsBlock
+                    )
+                } else {
+                    initiatePinsBlock { _ in }
+                }
                 
                 if !work.isCancelled {
                     DispatchQueue.main.sync { [weak self] in
-                        guard let _self = self else { return }
+                        guard let `self` = self else { return }
+                        let isNew = self.pins == nil
                         
-                        let isNew = _self.pins == nil
-                        
-                        _self.pins = pins
-                        
-                        _self.updateVisibleArea(bounds, forceMove: isNew)
-                        _self.updateMarkers()
+                        self.pins = pins
+                        self.setScrollPlan(scrollPlan, forceMove: isNew)
+                        self.updateMarkers()
                     }
                 }
             }
@@ -250,8 +256,18 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     }
     
     
-    //MARK: - Visible Area
+    //MARK: - Scroll Plan
     
+    open func getScrollPlan(focusRegion: YMKVisibleRegion?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin) -> Void) -> Void)) -> ScrollPlan? {
+        
+        var bounds: BoundsMapMarkers? = .init()
+        createVisibleArea(&bounds, focusRegion: focusRegion, userLocation: userLocation, customMarker: customMarker, cycleHandler: cycleHandler)
+        
+        guard let bounds = bounds else { return nil }
+        return .init(visibleBounds: bounds, animation: .immediate)
+    }
+    
+    @available(*, deprecated, renamed: "getScrollPlan(focusRegion:userLocation:customMarker:cycleHandler:)")
     open func createVisibleArea(_ bounds: inout BoundsMapMarkers?, focusRegion: YMKVisibleRegion?, userLocation: YMKPoint?, customMarker: Marker?, cycleHandler: (((_ pin: Pin) -> Void) -> Void)) {
         var minDistancePin: Pin?
         var minDistance: Double?
@@ -290,11 +306,14 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         return forceMove || !didFirstGestureScroll
     }
     
-    func updateVisibleArea(_ bounds: BoundsMapMarkers?, forceMove: Bool) {
-        if let map = map, let bounds = bounds, needToMoveInUpdateVisibleArea(forceMove: forceMove) {
-            let cameraPosition = map.cameraPosition(with: bounds.getBoundingBox())
-            move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), fast: true, isGestureScroll: false)
-        }
+    func setScrollPlan(_ scrollPlan: ScrollPlan?, forceMove: Bool) {
+        guard let map = map,
+              let scrollPlan = scrollPlan,
+              needToMoveInUpdateVisibleArea(forceMove: forceMove)
+        else { return }
+        
+        let cameraPosition = map.cameraPosition(with: scrollPlan.visibleBounds.getBoundingBox())
+        move(with: cameraPosition.target, zoom: zoomOutForBounds(cameraPosition.zoom), animation: scrollPlan.animation, isGestureScroll: false)
     }
     
     open func zoomOutForBounds(_ zoom: Float) -> Float {
@@ -350,18 +369,21 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         
         var work: DispatchWorkItem!
         work = DispatchWorkItem { [weak self] in
-            guard let _self = self else { return }
+            guard let `self` = self else { return }
             
-            let pins = _self.pins
-            var bounds: BoundsMapMarkers? = .init()
-            
-            _self.createVisibleArea(&bounds, focusRegion: focusRegion, userLocation: userLocation, customMarker: customLocation, cycleHandler: { (pinHandler) in
-                pins?.forEach { pinHandler($0) }
-            })
+            let pins = self.pins
+            let scrollPlan = self.getScrollPlan(
+                focusRegion: focusRegion,
+                userLocation: userLocation,
+                customMarker: customLocation,
+                cycleHandler: { setupPinHandler in
+                    pins?.forEach { setupPinHandler($0) }
+                }
+            )
             
             if !work.isCancelled {
                 DispatchQueue.main.sync { [weak self] in
-                    self?.updateVisibleArea(bounds, forceMove: forceMove)
+                    self?.setScrollPlan(scrollPlan, forceMove: forceMove)
                 }
             }
         }
@@ -387,7 +409,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     //MARK: - Move Camera Position
     
     open func moveToCurrentLocation(deniedCompletion: (() -> Void)? = nil, isGestureScroll: Bool = true) {
-        
         guard let userLocation = userLocation else {
             deniedCompletion?()
             return
@@ -396,41 +417,37 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         if let cameraZoom = map?.cameraPosition.zoom {
             let targetZoom = userLocationCameraZoom
             let zoom = cameraZoom < targetZoom ? targetZoom : cameraZoom
-            move(with: userLocation, zoom: zoom, fast: false, isGestureScroll: true)
+            move(with: userLocation, zoom: zoom, animation: .smooth, isGestureScroll: true)
         } else {
-            move(with: userLocation, zoom: userLocationCameraZoom, fast: false, isGestureScroll: true)
+            move(with: userLocation, zoom: userLocationCameraZoom, animation: .smooth, isGestureScroll: true)
         }
     }
     
-    public func move(zoomDiff: Float, fast: Bool = false, isGestureScroll: Bool = true) {
-        
+    public func move(zoomDiff: Float, animation: ScrollAnimation = .smooth, isGestureScroll: Bool = true) {
         guard let map = map else { return }
-        move(with: map.cameraPosition.target, zoom: map.cameraPosition.zoom + zoomDiff, fast: fast, isGestureScroll: true)
+        move(with: map.cameraPosition.target, zoom: map.cameraPosition.zoom + zoomDiff, animation: animation, isGestureScroll: true)
     }
     
     public func setCityLocation(latitude: Double, longitude: Double) {
-        
         guard let _ = map else { return }
-        move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: 8, fast: true)
+        move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: 8, animation: .immediate)
     }
     
-    public func move(latitude: Double, longitude: Double, zoom: Float, fast: Bool = false, isGestureScroll: Bool = true) {
-        
+    public func move(latitude: Double, longitude: Double, zoom: Float, animation: ScrollAnimation = .smooth, isGestureScroll: Bool = true) {
         guard let _ = map else { return }
-        move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: zoom, fast: fast, isGestureScroll: isGestureScroll)
+        move(with: YMKPoint(latitude: latitude, longitude: longitude), zoom: zoom, animation: animation, isGestureScroll: isGestureScroll)
     }
     
     /**
      - parameter targetZoom: Zoom level for move to pin. Return `nil` to disable zoom. `nil` by default.
      */
-    open func move(with pin: Pin, targetZoom: Float? = nil, fast: Bool = false, isGestureScroll: Bool = true) {
-        
+    open func move(with pin: Pin, targetZoom: Float? = nil, animation: ScrollAnimation = .smooth, isGestureScroll: Bool = true) {
         guard let cameraZoom = map?.cameraPosition.zoom else { return }
         let zoom = targetZoom != nil && cameraZoom < targetZoom! ? targetZoom! : cameraZoom
-        move(with: pin.Coordinate, zoom: zoom, fast: fast, isGestureScroll: isGestureScroll)
+        move(with: pin.Coordinate, zoom: zoom, animation: animation, isGestureScroll: isGestureScroll)
     }
     
-    open func move(with cluster: Cluster, fast: Bool = false, isGestureScroll: Bool = true) {
+    open func move(with cluster: Cluster, animation: ScrollAnimation = .smooth, isGestureScroll: Bool = true) {
         guard let map = map else { return }
         
         let bounds = cluster.placemarks.reduce(BoundsMapMarkers(azimuth: Double(map.cameraPosition.azimuth))) { (res, placemark) -> BoundsMapMarkers in
@@ -454,10 +471,10 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             zoom = map.cameraPosition.zoom + 0.5
         }
         
-        move(with: cameraPosition.target, zoom: zoom, fast: fast, isGestureScroll: isGestureScroll)
+        move(with: cameraPosition.target, zoom: zoom, animation: animation, isGestureScroll: isGestureScroll)
     }
     
-    private func move(with target: YMKPoint, zoom: Float, fast: Bool = false, isGestureScroll: Bool = true) {
+    private func move(with target: YMKPoint, zoom: Float, animation: ScrollAnimation = .smooth, isGestureScroll: Bool = true) {
         guard let map = map else { return }
         
         map.move(
@@ -467,8 +484,8 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
                 azimuth: map.cameraPosition.azimuth,
                 tilt: map.cameraPosition.tilt),
             animationType: YMKAnimation(
-                type: fast ? .linear : .smooth,
-                duration: fast ? 0 : 0.2))
+                type: animation.type,
+                duration: Float(animation.duration)))
         
         if isGestureScroll {
             didFirstGestureScroll = true
@@ -514,7 +531,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
     /**
      - parameter targetZoom: Zoom level for move to pin. Return `nil` to disable transition. `nil` by default.
      */
-    public func select(object: IPinObject?, targetZoom: Float? = nil, fast: Bool = false) {
+    public func select(object: IPinObject?, targetZoom: Float? = nil, animation: ScrollAnimation = .smooth) {
         guard let object = object else {
             unselectPin()
             return
@@ -527,7 +544,7 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
         selectedPin = pin
         
         if let targetZoom = targetZoom {
-            move(with: pin, targetZoom: targetZoom, fast: fast, isGestureScroll: true)
+            move(with: pin, targetZoom: targetZoom, animation: animation, isGestureScroll: true)
         }
     }
     
@@ -554,16 +571,6 @@ open class CMDataAdapter: NSObject, YMKClusterListener, YMKClusterTapListener, Y
             setSelectedPin(nil, needNotificate: needNotificate)
             selectedPin.isSelected = false
         }
-    }
-    
-    @available(*, deprecated, renamed: "select(object:targetZoom:fast:)")
-    public func select(with object: IPinObject, targetZoom: Float? = nil, fast: Bool = false) {
-        select(object: object, targetZoom: targetZoom, fast: fast)
-    }
-    
-    @available(*, deprecated, renamed: "select(placemark:)")
-    public func select(with placemark: YMKPlacemarkMapObject?) {
-        select(placemark: placemark)
     }
     
     //MARK: - Update Map Object
